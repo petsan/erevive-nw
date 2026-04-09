@@ -260,42 +260,43 @@ export default function PublicDonatePage() {
                 </div>
               )}
               {!preview && !aiResult && (
-                <p className="text-sm text-gray-500 text-center">Describe your item below</p>
+                <p className="text-sm text-gray-500 text-center">Tell us what you&apos;d like to donate</p>
               )}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">What is it? <span className="text-red-500">*</span></label>
-                <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="e.g., Dell Laptop, iPhone 12, Samsung Monitor" className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none" />
+                <select value={title} onChange={(e) => { setTitle(e.target.value); setCategory(e.target.value); }} className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none bg-white">
+                  <option value="">Select item type...</option>
+                  <option value="Laptop">Laptop</option>
+                  <option value="Desktop Computer">Desktop Computer</option>
+                  <option value="Monitor / Display">Monitor / Display</option>
+                  <option value="Cell Phone">Cell Phone</option>
+                  <option value="Tablet">Tablet</option>
+                  <option value="Printer / Scanner">Printer / Scanner</option>
+                  <option value="TV / Flat Screen">TV / Flat Screen</option>
+                  <option value="Keyboard / Mouse">Keyboard / Mouse</option>
+                  <option value="Cables / Chargers">Cables / Chargers</option>
+                  <option value="Router / Modem">Router / Modem</option>
+                  <option value="Gaming Console">Gaming Console</option>
+                  <option value="Hard Drive / SSD">Hard Drive / SSD</option>
+                  <option value="Server / Rack Equipment">Server / Rack Equipment</option>
+                  <option value="Battery / UPS">Battery / UPS</option>
+                  <option value="Speakers / Headphones">Speakers / Headphones</option>
+                  <option value="Camera / Webcam">Camera / Webcam</option>
+                  <option value="Other">Other</option>
+                </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={3} placeholder="Condition, any issues, approximate age, etc." className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none" />
+                <label className="block text-sm font-medium text-gray-700 mb-1">Details <span className="text-gray-400 font-normal">(optional)</span></label>
+                <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={2} placeholder="Brand, model, age, any issues, etc." className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none" />
               </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                  <select value={category} onChange={(e) => setCategory(e.target.value)} className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none bg-white">
-                    <option value="">Select...</option>
-                    <option value="Laptop">Laptop</option>
-                    <option value="Desktop">Desktop</option>
-                    <option value="Monitor">Monitor</option>
-                    <option value="Phone">Phone</option>
-                    <option value="Tablet">Tablet</option>
-                    <option value="Printer">Printer</option>
-                    <option value="TV">TV</option>
-                    <option value="Gaming Console">Gaming Console</option>
-                    <option value="Networking Equipment">Networking Equipment</option>
-                    <option value="Cables & Accessories">Cables & Accessories</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Condition</label>
-                  <select value={condition} onChange={(e) => setCondition(e.target.value)} className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none bg-white">
-                    <option value="">Unknown</option>
-                    <option value="working">Working</option>
-                    <option value="damaged">Damaged</option>
-                  </select>
-                </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Condition</label>
+                <select value={condition} onChange={(e) => setCondition(e.target.value)} className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none bg-white">
+                  <option value="">Not sure</option>
+                  <option value="working">Working</option>
+                  <option value="damaged">Damaged / Broken</option>
+                  <option value="unknown">Powers on but untested</option>
+                </select>
               </div>
               <button onClick={handleNext} disabled={!title.trim()} className="w-full rounded-lg bg-emerald-600 px-4 py-3 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
                 Next: Contact Info
