@@ -17,13 +17,17 @@ export interface UserResponse {
 
 export interface ItemResponse {
   id: string;
+  user_id: string;
   title: string;
   description: string;
   category: string | null;
   brand: string | null;
-  model: string | null;
+  model_name: string | null;
   condition: string | null;
+  ai_provider: string | null;
+  ai_confidence: number | null;
   status: string;
+  pickup_id: string | null;
   created_at: string;
 }
 
