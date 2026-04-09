@@ -1,14 +1,74 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import type { IdentificationResult, ItemResponse } from "@/types/api";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "/api/v1";
 
-type Step = "choose" | "upload" | "identifying" | "review" | "contact" | "done";
+type Step = "choose" | "upload" | "identifying" | "review" | "contact" | "receipt";
+
+const ITEM_GROUPS: { label: string; items: string[] }[] = [
+  {
+    label: "Computers",
+    items: ["Desktop Computer", "Laptop", "Server", "Tablet"],
+  },
+  {
+    label: "Components",
+    items: [
+      "CPU / Processor",
+      "Graphics Card / GPU",
+      "Hard Drive / SSD",
+      "Motherboard",
+      "Network Card / NIC",
+      "RAM / Memory",
+    ],
+  },
+  {
+    label: "Displays",
+    items: ["Monitor / Display", "TV / Flat Screen"],
+  },
+  {
+    label: "Mobile Devices",
+    items: ["Cell Phone", "Smartwatch / Wearable", "Tablet"],
+  },
+  {
+    label: "Peripherals",
+    items: [
+      "Camera / Webcam",
+      "Dock / Hub / KVM",
+      "Keyboard",
+      "Mouse",
+      "Printer / Scanner",
+      "Speakers / Headphones",
+    ],
+  },
+  {
+    label: "Networking",
+    items: ["Access Point", "Firewall / UTM", "Router / Modem / Switch"],
+  },
+  {
+    label: "Power",
+    items: ["Battery / UPS", "Cables / Chargers / Power Supplies", "PDU / Power Strip"],
+  },
+  {
+    label: "Infrastructure",
+    items: ["Rack / Shelf / Rails", "Server", "Tape Drive / Backup"],
+  },
+  {
+    label: "Entertainment",
+    items: ["Gaming Console", "Streaming Device"],
+  },
+  {
+    label: "Other",
+    items: ["Other"],
+  },
+];
+
+// Deduplicated flat list for AI matching
+const ALL_ITEMS = [...new Set(ITEM_GROUPS.flatMap((g) => g.items))].sort();
 
 export default function PublicDonatePage() {
   const router = useRouter();
@@ -20,49 +80,22 @@ export default function PublicDonatePage() {
   const [error, setError] = useState<string | null>(null);
 
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
-  const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("");
   const [condition, setCondition] = useState("");
-
-  const ITEM_TYPES = [
-    "Laptop",
-    "Desktop Computer",
-    "Server",
-    "Monitor / Display",
-    "Cell Phone",
-    "Tablet",
-    "Printer / Scanner",
-    "TV / Flat Screen",
-    "Keyboard",
-    "Mouse",
-    "Cables / Chargers / Power Supplies",
-    "Router / Modem / Switch",
-    "Gaming Console",
-    "Hard Drive / SSD",
-    "RAM / Memory",
-    "Graphics Card / GPU",
-    "Motherboard",
-    "CPU / Processor",
-    "Network Card / NIC",
-    "Battery / UPS",
-    "Speakers / Headphones",
-    "Camera / Webcam",
-    "Dock / Hub / KVM",
-    "Rack / Shelf / Rails",
-    "PDU / Power Strip",
-    "Tape Drive / Backup",
-    "Other",
-  ];
-
-  const toggleItem = (item: string) => {
-    setSelectedItems((prev) =>
-      prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item]
-    );
-  };
   const [donorName, setDonorName] = useState("");
   const [donorEmail, setDonorEmail] = useState("");
   const [donorPhone, setDonorPhone] = useState("");
+
+  // Receipt data
+  const [receiptNumber, setReceiptNumber] = useState("");
+  const [receiptDate, setReceiptDate] = useState("");
+  const receiptRef = useRef<HTMLDivElement>(null);
+
+  const toggleItem = (item: string) => {
+    setSelectedItems((prev) =>
+      prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item],
+    );
+  };
 
   const startDonation = async (): Promise<string> => {
     if (itemId) return itemId;
@@ -95,16 +128,11 @@ export default function PublicDonatePage() {
     if (!file) return;
     setError(null);
     setStep("identifying");
-
     try {
       const id = await startDonation();
-
       const formData = new FormData();
       formData.append("file", file);
-      const uploadResp = await fetch(`${API}/donate/${id}/upload`, {
-        method: "POST",
-        body: formData,
-      });
+      const uploadResp = await fetch(`${API}/donate/${id}/upload`, { method: "POST", body: formData });
       if (!uploadResp.ok) throw new Error("Upload failed");
 
       const idResp = await fetch(`${API}/donate/${id}/identify`, {
@@ -115,16 +143,12 @@ export default function PublicDonatePage() {
         setStep("review");
         return;
       }
-
       const result: IdentificationResult = await idResp.json();
       setAiResult(result);
-      setTitle(result.title);
       setDescription(result.description);
-      setCategory(result.category || "");
       setCondition(result.condition || "");
-      if (result.category && ITEM_TYPES.includes(result.category)) {
-        setSelectedItems([result.category]);
-      }
+      const match = ALL_ITEMS.find((i) => i.toLowerCase().includes((result.category || "").toLowerCase()));
+      if (match) setSelectedItems([match]);
       setStep("review");
     } catch (err) {
       setError((err as Error).message || "Something went wrong");
@@ -141,9 +165,9 @@ export default function PublicDonatePage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          title: selectedItems.length > 0 ? selectedItems.join(", ") : title || "Donated Item",
+          title: selectedItems.length > 0 ? selectedItems.join(", ") : "Donated Item",
           description: description || "No description provided",
-          category: selectedItems.length > 0 ? selectedItems[0] : category || null,
+          category: selectedItems.length > 0 ? selectedItems[0] : null,
           condition: condition || null,
           donor_name: donorName || null,
           donor_email: donorEmail || null,
@@ -151,10 +175,17 @@ export default function PublicDonatePage() {
         }),
       });
       if (!resp.ok) throw new Error("Submission failed");
-      setStep("done");
+      const data: ItemResponse = await resp.json();
+      setReceiptNumber(data.id.split("-")[0].toUpperCase());
+      setReceiptDate(new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }));
+      setStep("receipt");
     } catch (err) {
       setError((err as Error).message);
     }
+  };
+
+  const handlePrintReceipt = () => {
+    window.print();
   };
 
   const reset = () => {
@@ -165,23 +196,22 @@ export default function PublicDonatePage() {
     setAiResult(null);
     setError(null);
     setSelectedItems([]);
-    setTitle("");
     setDescription("");
-    setCategory("");
     setCondition("");
     setDonorName("");
     setDonorEmail("");
     setDonorPhone("");
+    setReceiptNumber("");
+    setReceiptDate("");
   };
 
-  // Progress bar labels adjust based on whether user chose photo or manual
-  const progressSteps = ["Start", "Details", "Contact", "Done"];
+  const progressSteps = ["Start", "Details", "Contact", "Receipt"];
   const progressIdx = (() => {
     switch (step) {
       case "choose": case "upload": case "identifying": return 0;
       case "review": return 1;
       case "contact": return 2;
-      case "done": return 3;
+      case "receipt": return 3;
     }
   })();
 
@@ -191,7 +221,9 @@ export default function PublicDonatePage() {
       <main className="flex-1 bg-gray-50">
         <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8 py-10">
           <h1 className="text-2xl font-bold text-gray-900 mb-2">Donate Electronics</h1>
-          <p className="text-sm text-gray-600 mb-8">No account needed. Photo optional.</p>
+          <p className="text-sm text-gray-600 mb-8">
+            Free e-waste recycling for the Seattle area. No account needed. Photo optional.
+          </p>
 
           {/* Progress */}
           <div className="flex items-center gap-2 mb-8">
@@ -210,12 +242,9 @@ export default function PublicDonatePage() {
           {/* Step 1: Choose path */}
           {step === "choose" && (
             <div className="space-y-4">
-              <button
-                onClick={() => setStep("upload")}
-                className="w-full bg-white rounded-xl border border-gray-200 p-6 text-left hover:border-emerald-400 hover:shadow-sm transition-all group"
-              >
+              <button onClick={() => setStep("upload")} className="w-full bg-white rounded-xl border border-gray-200 p-6 text-left hover:border-emerald-400 hover:shadow-sm transition-all group">
                 <div className="flex items-center gap-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 text-xl group-hover:bg-emerald-200 transition-colors">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 group-hover:bg-emerald-200 transition-colors">
                     <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
                       <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
@@ -227,33 +256,41 @@ export default function PublicDonatePage() {
                   </div>
                 </div>
               </button>
-
-              <button
-                onClick={handleDescribeManually}
-                className="w-full bg-white rounded-xl border border-gray-200 p-6 text-left hover:border-emerald-400 hover:shadow-sm transition-all group"
-              >
+              <button onClick={handleDescribeManually} className="w-full bg-white rounded-xl border border-gray-200 p-6 text-left hover:border-emerald-400 hover:shadow-sm transition-all group">
                 <div className="flex items-center gap-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 text-gray-600 text-xl group-hover:bg-emerald-100 group-hover:text-emerald-700 transition-colors">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 text-gray-600 group-hover:bg-emerald-100 group-hover:text-emerald-700 transition-colors">
                     <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900">Describe it yourself</h3>
+                    <h3 className="font-semibold text-gray-900">Describe it</h3>
                     <p className="text-sm text-gray-500 mt-0.5">No photo needed — just tell us what you have</p>
+                  </div>
+                </div>
+              </button>
+
+              <button onClick={handleDescribeManually} className="w-full bg-white rounded-xl border border-gray-200 p-6 text-left hover:border-emerald-400 hover:shadow-sm transition-all group">
+                <div className="flex items-center gap-4">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 text-gray-600 group-hover:bg-emerald-100 group-hover:text-emerald-700 transition-colors">
+                    <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900">Bring it myself</h3>
+                    <p className="text-sm text-gray-500 mt-0.5">Drop off at our Seattle location — tell us what you&apos;re bringing</p>
                   </div>
                 </div>
               </button>
             </div>
           )}
 
-          {/* Step 1b: Upload photo */}
+          {/* Upload photo */}
           {step === "upload" && (
             <div className="bg-white rounded-xl border border-gray-200 p-8">
-              <label
-                htmlFor="photo-upload"
-                className="relative cursor-pointer rounded-2xl border-2 border-dashed border-gray-300 p-12 block hover:border-emerald-400 transition-colors text-center"
-              >
+              <label htmlFor="photo-upload" className="relative cursor-pointer rounded-2xl border-2 border-dashed border-gray-300 p-12 block hover:border-emerald-400 transition-colors text-center">
                 {preview ? (
                   <img src={preview} alt="Preview" className="mx-auto max-h-64 rounded-lg object-contain" />
                 ) : (
@@ -270,15 +307,9 @@ export default function PublicDonatePage() {
               </label>
               <div className="mt-6 flex gap-3">
                 {file ? (
-                  <button onClick={handleUploadAndIdentify} className="flex-1 rounded-lg bg-emerald-600 px-4 py-3 text-sm font-semibold text-white hover:bg-emerald-700 transition-colors">
-                    Upload & Identify with AI
-                  </button>
-                ) : (
-                  <div className="flex-1" />
-                )}
-                <button onClick={() => setStep("choose")} className="rounded-lg border border-gray-300 px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
-                  Back
-                </button>
+                  <button onClick={handleUploadAndIdentify} className="flex-1 rounded-lg bg-emerald-600 px-4 py-3 text-sm font-semibold text-white hover:bg-emerald-700 transition-colors">Upload & Identify with AI</button>
+                ) : (<div className="flex-1" />)}
+                <button onClick={() => setStep("choose")} className="rounded-lg border border-gray-300 px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">Back</button>
               </div>
             </div>
           )}
@@ -293,7 +324,7 @@ export default function PublicDonatePage() {
 
           {/* Step 2: Review / describe */}
           {step === "review" && (
-            <div className="bg-white rounded-xl border border-gray-200 p-8 space-y-5">
+            <div className="bg-white rounded-xl border border-gray-200 p-8 space-y-6">
               {preview && <img src={preview} alt="Item" className="mx-auto max-h-48 rounded-lg object-contain" />}
               {aiResult && (
                 <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3 text-sm text-emerald-800 text-center">
@@ -303,35 +334,45 @@ export default function PublicDonatePage() {
               {!preview && !aiResult && (
                 <p className="text-sm text-gray-500 text-center">Select everything you&apos;d like to donate</p>
               )}
+
+              {/* Grouped multi-select */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">What are you donating? <span className="text-red-500">*</span></label>
-                <div className="flex flex-wrap gap-2">
-                  {ITEM_TYPES.map((item) => {
-                    const selected = selectedItems.includes(item);
-                    return (
-                      <button
-                        key={item}
-                        type="button"
-                        onClick={() => toggleItem(item)}
-                        className={`rounded-full px-3.5 py-1.5 text-sm font-medium border transition-colors ${
-                          selected
-                            ? "bg-emerald-600 text-white border-emerald-600"
-                            : "bg-white text-gray-700 border-gray-300 hover:border-emerald-400 hover:text-emerald-700"
-                        }`}
-                      >
-                        {selected && <span className="mr-1">&#10003;</span>}
-                        {item}
-                      </button>
-                    );
-                  })}
+                <label className="block text-sm font-medium text-gray-700 mb-3">What are you donating? <span className="text-red-500">*</span></label>
+                <div className="space-y-4">
+                  {ITEM_GROUPS.map((group) => (
+                    <div key={group.label}>
+                      <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1.5">{group.label}</p>
+                      <div className="flex flex-wrap gap-2">
+                        {group.items.map((item) => {
+                          const selected = selectedItems.includes(item);
+                          return (
+                            <button
+                              key={`${group.label}-${item}`}
+                              type="button"
+                              onClick={() => toggleItem(item)}
+                              className={`rounded-full px-3.5 py-1.5 text-sm font-medium border transition-colors ${
+                                selected
+                                  ? "bg-emerald-600 text-white border-emerald-600"
+                                  : "bg-white text-gray-700 border-gray-300 hover:border-emerald-400 hover:text-emerald-700"
+                              }`}
+                            >
+                              {selected && <span className="mr-1">&#10003;</span>}
+                              {item}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
                 </div>
                 {selectedItems.length > 0 && (
-                  <p className="mt-2 text-xs text-gray-500">{selectedItems.length} item{selectedItems.length > 1 ? "s" : ""} selected</p>
+                  <p className="mt-3 text-xs text-emerald-700 font-medium">{selectedItems.length} item{selectedItems.length !== 1 ? "s" : ""} selected</p>
                 )}
               </div>
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Details <span className="text-gray-400 font-normal">(optional)</span></label>
-                <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={2} placeholder="Brand, model, age, any issues, etc." className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none" />
+                <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={2} placeholder="Brand, model, age, quantity, any issues, etc." className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Condition</label>
@@ -373,21 +414,92 @@ export default function PublicDonatePage() {
             </div>
           )}
 
-          {/* Step 4: Done */}
-          {step === "done" && (
-            <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-3xl">
-                ✓
+          {/* Step 4: Receipt */}
+          {step === "receipt" && (
+            <div ref={receiptRef}>
+              <div className="bg-white rounded-xl border border-gray-200 overflow-hidden print:shadow-none print:border-0">
+                {/* Receipt header */}
+                <div className="bg-emerald-600 px-8 py-6 text-white print:bg-white print:text-black">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h2 className="text-xl font-bold">eRevive NW</h2>
+                      <p className="text-sm text-emerald-100 print:text-gray-600">E-Waste Recycling — Seattle, WA</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm font-medium text-emerald-100 print:text-gray-600">Donation Receipt</p>
+                      <p className="text-lg font-bold">#{receiptNumber}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="px-8 py-6 space-y-5">
+                  {/* Date */}
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-500">Date</span>
+                    <span className="font-medium text-gray-900">{receiptDate}</span>
+                  </div>
+
+                  {/* Donor info */}
+                  {(donorName || donorEmail || donorPhone) && (
+                    <div className="border-t border-gray-100 pt-4">
+                      <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Donor</p>
+                      {donorName && <p className="text-sm text-gray-900 font-medium">{donorName}</p>}
+                      {donorEmail && <p className="text-sm text-gray-600">{donorEmail}</p>}
+                      {donorPhone && <p className="text-sm text-gray-600">{donorPhone}</p>}
+                    </div>
+                  )}
+
+                  {/* Items */}
+                  <div className="border-t border-gray-100 pt-4">
+                    <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Items Donated</p>
+                    <div className="space-y-1.5">
+                      {selectedItems.map((item) => (
+                        <div key={item} className="flex items-center gap-2 text-sm">
+                          <span className="text-emerald-600">&#10003;</span>
+                          <span className="text-gray-900">{item}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Description */}
+                  {description && (
+                    <div className="border-t border-gray-100 pt-4">
+                      <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Details</p>
+                      <p className="text-sm text-gray-700">{description}</p>
+                    </div>
+                  )}
+
+                  {/* Condition */}
+                  {condition && (
+                    <div className="flex justify-between text-sm border-t border-gray-100 pt-4">
+                      <span className="text-gray-500">Condition</span>
+                      <span className="font-medium text-gray-900 capitalize">{condition}</span>
+                    </div>
+                  )}
+
+                  {/* Footer note */}
+                  <div className="border-t border-gray-100 pt-4 text-center">
+                    <p className="text-xs text-gray-400">
+                      Thank you for recycling responsibly with eRevive NW.
+                      This receipt confirms your donation submission. Items are subject to review.
+                    </p>
+                    <p className="text-xs text-gray-400 mt-1">
+                      eRevive NW &middot; Seattle, WA &middot; erevivenw.com
+                    </p>
+                  </div>
+                </div>
               </div>
-              <h2 className="mt-6 text-xl font-semibold text-gray-900">Thank you!</h2>
-              <p className="mt-2 text-sm text-gray-600">
-                Your donation has been submitted. We&apos;ll review it shortly.
-              </p>
-              <div className="mt-8 flex flex-wrap gap-4 justify-center">
-                <button onClick={reset} className="rounded-lg bg-emerald-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-emerald-700 transition-colors">
+
+              {/* Actions (hidden in print) */}
+              <div className="mt-6 flex flex-wrap gap-3 justify-center print:hidden">
+                <button onClick={handlePrintReceipt} className="rounded-lg border border-gray-300 px-5 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                  Print Receipt
+                </button>
+                <button onClick={reset} className="rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-emerald-700 transition-colors">
                   Donate Another Item
                 </button>
-                <button onClick={() => router.push("/")} className="rounded-lg border border-gray-300 px-6 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                <button onClick={() => router.push("/")} className="rounded-lg border border-gray-300 px-5 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
                   Back to Home
                 </button>
               </div>
