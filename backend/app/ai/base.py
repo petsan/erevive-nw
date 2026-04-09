@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from enum import Enum
+from enum import StrEnum
 
 
-class AIProviderName(str, Enum):
+class AIProviderName(StrEnum):
     LMSTUDIO = "lmstudio"
     CLAUDE = "claude"
     OPENAI = "openai"
@@ -26,9 +26,9 @@ class AIProvider(ABC):
     name: AIProviderName
 
     @abstractmethod
-    async def identify_item(self, image_bytes: bytes, content_type: str) -> IdentificationResult:
-        ...
+    async def identify_item(
+        self, image_bytes: bytes, content_type: str
+    ) -> IdentificationResult: ...
 
     @abstractmethod
-    async def health_check(self) -> bool:
-        ...
+    async def health_check(self) -> bool: ...

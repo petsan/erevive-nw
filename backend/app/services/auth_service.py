@@ -33,9 +33,7 @@ class AuthService:
         await db.refresh(user)
         return user
 
-    async def authenticate(
-        self, db: AsyncSession, email: str, password: str
-    ) -> User | None:
+    async def authenticate(self, db: AsyncSession, email: str, password: str) -> User | None:
         stmt = select(User).where(User.email == email)
         result = await db.execute(stmt)
         user = result.scalar_one_or_none()
