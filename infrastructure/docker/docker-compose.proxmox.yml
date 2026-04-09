@@ -1,0 +1,32 @@
+services:
+  frontend:
+    image: erevive-frontend:latest
+    build: !reset null
+    security_opt:
+      - apparmor:unconfined
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"fetch('http://localhost:3000').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))\""]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  backend:
+    build:
+      context: ../../backend
+      dockerfile: Dockerfile
+      target: production
+    security_opt:
+      - apparmor:unconfined
+
+  postgres:
+    security_opt:
+      - apparmor:unconfined
+
+  redis:
+    security_opt:
+      - apparmor:unconfined
+
+  nginx:
+    security_opt:
+      - apparmor:unconfined

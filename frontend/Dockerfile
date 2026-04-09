@@ -1,10 +1,10 @@
-FROM node:24-alpine AS base
+FROM node:22-slim AS base
 WORKDIR /app
 
 # Install dependencies
 FROM base AS deps
-COPY package.json package-lock.json ./
-RUN npm ci
+COPY package.json .npmrc ./
+RUN npm install --ignore-scripts && npx --yes napi-postinstall || true
 
 # Development
 FROM base AS development
