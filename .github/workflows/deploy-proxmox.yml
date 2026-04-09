@@ -1,0 +1,28 @@
+name: Deploy to Proxmox
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy to Proxmox
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up SSH key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.PROXMOX_SSH_KEY }}
+
+      - name: Add host to known_hosts
+        run: ssh-keyscan -H 192.168.0.100 >> ~/.ssh/known_hosts 2>/dev/null || true
+
+      - name: Deploy
+        run: |
+          chmod +x infrastructure/deploy/proxmox/deploy.sh
+          bash infrastructure/deploy/proxmox/deploy.sh
