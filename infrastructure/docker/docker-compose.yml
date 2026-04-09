@@ -1,0 +1,129 @@
+services:
+  nginx:
+    image: nginx:1.27-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      frontend:
+        condition: service_healthy
+      backend:
+        condition: service_healthy
+    networks:
+      - erevive-net
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ../../frontend
+      dockerfile: Dockerfile
+      target: production
+    environment:
+      - NEXT_PUBLIC_API_URL=/api
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3000"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - erevive-net
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ../../backend
+      dockerfile: Dockerfile
+      target: production
+    environment:
+      - EREVIVE_DATABASE_URL=postgresql+asyncpg://erevive_app:${DB_PASSWORD:-changeme}@postgres:5432/erevive
+      - EREVIVE_REDIS_URL=redis://:${REDIS_PASSWORD:-changeme}@redis:6379/0
+      - EREVIVE_VAULT_ENABLED=${VAULT_ENABLED:-false}
+      - EREVIVE_VAULT_ADDR=http://vault:8200
+      - EREVIVE_AI_DEFAULT_PROVIDER=lmstudio
+      - EREVIVE_LMSTUDIO_BASE_URL=${LMSTUDIO_BASE_URL:-http://host.docker.internal:1234/v1}
+      - EREVIVE_JWT_SECRET_KEY=${JWT_SECRET_KEY:-dev-secret-change-in-production}
+      - EREVIVE_CORS_ORIGINS=["http://localhost","https://localhost"]
+    volumes:
+      - upload-data:/app/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    networks:
+      - erevive-net
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: erevive
+      POSTGRES_USER: erevive_app
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-changeme}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U erevive_app -d erevive"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - erevive-net
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    command: redis-server --requirepass ${REDIS_PASSWORD:-changeme}
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "--no-auth-warning", "-a", "${REDIS_PASSWORD:-changeme}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - erevive-net
+    restart: unless-stopped
+
+  vault:
+    image: hashicorp/vault:1.19
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - vault-data:/vault/data
+      - ./vault/config.hcl:/vault/config/config.hcl:ro
+      - ./vault/policies:/vault/policies:ro
+    command: vault server -config=/vault/config/config.hcl
+    environment:
+      - VAULT_ADDR=http://0.0.0.0:8200
+    healthcheck:
+      test: ["CMD", "vault", "status", "-format=json"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - erevive-net
+    restart: unless-stopped
+    profiles:
+      - vault
+
+volumes:
+  postgres-data:
+  redis-data:
+  vault-data:
+  upload-data:
+
+networks:
+  erevive-net:
+    driver: bridge

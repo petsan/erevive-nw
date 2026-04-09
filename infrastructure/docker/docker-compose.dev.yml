@@ -1,0 +1,28 @@
+services:
+  frontend:
+    build:
+      target: development
+    volumes:
+      - ../../frontend/src:/app/src
+      - ../../frontend/public:/app/public
+    ports:
+      - "3000:3000"
+
+  backend:
+    build:
+      target: development
+    volumes:
+      - ../../backend/app:/app/app
+      - ../../backend/tests:/app/tests
+    ports:
+      - "8000:8000"
+    environment:
+      - EREVIVE_DEBUG=true
+
+  postgres:
+    ports:
+      - "5432:5432"
+
+  redis:
+    ports:
+      - "6379:6379"
