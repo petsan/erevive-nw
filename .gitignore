@@ -1,0 +1,70 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment & Secrets
+.env
+.env.local
+.env.production
+.env.*.local
+.secrets/
+*.pem
+*.key
+*.crt
+*.csr
+
+# Docker volumes (local data)
+postgres-data/
+vault-data/
+vault-keys/
+redis-data/
+upload-data/
+
+# Next.js
+.next/
+out/
+
+# Testing
+coverage/
+htmlcov/
+.coverage
+.pytest_cache/
+.nyc_output/
+test-results/
+playwright-report/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+!*.tfvars.example
+.terraform.lock.hcl
+
+# Misc
+*.log
+*.tmp
+*.bak
+.claude/
