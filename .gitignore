@@ -69,3 +69,4 @@ playwright-report/
 *.bak
 .claude/
 backend/test.db
+backend/uploads/
