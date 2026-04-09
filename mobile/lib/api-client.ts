@@ -41,6 +41,8 @@ async function apiFetch<T>(endpoint: string, options: FetchOptions = {}): Promis
 }
 
 export const api = {
+  baseUrl: API_URL,
+
   get: <T>(endpoint: string, options?: FetchOptions) =>
     apiFetch<T>(endpoint, { ...options, method: "GET" }),
 

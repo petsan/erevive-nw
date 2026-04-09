@@ -4,71 +4,12 @@ import { useRouter } from "next/navigation";
 import { useCallback, useRef, useState } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import { ALL_ITEM_TYPES, CONDITION_OPTIONS, ITEM_GROUPS } from "@/lib/constants";
 import type { IdentificationResult, ItemResponse } from "@/types/api";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "/api/v1";
 
 type Step = "choose" | "upload" | "identifying" | "review" | "contact" | "receipt";
-
-const ITEM_GROUPS: { label: string; items: string[] }[] = [
-  {
-    label: "Computers",
-    items: ["Desktop Computer", "Laptop", "Server", "Tablet"],
-  },
-  {
-    label: "Components",
-    items: [
-      "CPU / Processor",
-      "Graphics Card / GPU",
-      "Hard Drive / SSD",
-      "Motherboard",
-      "Network Card / NIC",
-      "RAM / Memory",
-    ],
-  },
-  {
-    label: "Displays",
-    items: ["Monitor / Display", "TV / Flat Screen"],
-  },
-  {
-    label: "Mobile Devices",
-    items: ["Cell Phone", "Smartwatch / Wearable", "Tablet"],
-  },
-  {
-    label: "Peripherals",
-    items: [
-      "Camera / Webcam",
-      "Dock / Hub / KVM",
-      "Keyboard",
-      "Mouse",
-      "Printer / Scanner",
-      "Speakers / Headphones",
-    ],
-  },
-  {
-    label: "Networking",
-    items: ["Access Point", "Firewall / UTM", "Router / Modem / Switch"],
-  },
-  {
-    label: "Power",
-    items: ["Battery / UPS", "Cables / Chargers / Power Supplies", "PDU / Power Strip"],
-  },
-  {
-    label: "Infrastructure",
-    items: ["Rack / Shelf / Rails", "Server", "Tape Drive / Backup"],
-  },
-  {
-    label: "Entertainment",
-    items: ["Gaming Console", "Streaming Device"],
-  },
-  {
-    label: "Other",
-    items: ["Other"],
-  },
-];
-
-// Deduplicated flat list for AI matching
-const ALL_ITEMS = [...new Set(ITEM_GROUPS.flatMap((g) => g.items))].sort();
 
 export default function PublicDonatePage() {
   const router = useRouter();
@@ -147,7 +88,7 @@ export default function PublicDonatePage() {
       setAiResult(result);
       setDescription(result.description);
       setCondition(result.condition || "");
-      const match = ALL_ITEMS.find((i) => i.toLowerCase().includes((result.category || "").toLowerCase()));
+      const match = ALL_ITEM_TYPES.find((i) => i.toLowerCase().includes((result.category || "").toLowerCase()));
       if (match) setSelectedItems([match]);
       setStep("review");
     } catch (err) {
@@ -377,10 +318,9 @@ export default function PublicDonatePage() {
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Condition</label>
                 <select value={condition} onChange={(e) => setCondition(e.target.value)} className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none bg-white">
-                  <option value="">Not sure</option>
-                  <option value="working">Working</option>
-                  <option value="damaged">Damaged / Broken</option>
-                  <option value="unknown">Powers on but untested</option>
+                  {CONDITION_OPTIONS.map((opt) => (
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                  ))}
                 </select>
               </div>
               <button onClick={handleNext} disabled={selectedItems.length === 0} className="w-full rounded-lg bg-emerald-600 px-4 py-3 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
