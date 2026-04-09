@@ -6,7 +6,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import type { IdentificationResult, ItemResponse } from "@/types/api";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
+const API = process.env.NEXT_PUBLIC_API_URL || "/api/v1";
 
 type Step = "choose" | "upload" | "identifying" | "review" | "contact" | "done";
 

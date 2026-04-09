@@ -58,7 +58,7 @@ export default function DonatePage() {
       formData.append("file", file);
 
       const uploadResp = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1"}/items/${newItem.id}/upload`,
+        `${process.env.NEXT_PUBLIC_API_URL || "/api/v1"}/items/${newItem.id}/upload`,
         {
           method: "POST",
           headers: { Authorization: `Bearer ${token}` },
@@ -70,7 +70,7 @@ export default function DonatePage() {
 
       // 3. Identify
       const identifyResp = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1"}/items/${newItem.id}/identify`,
+        `${process.env.NEXT_PUBLIC_API_URL || "/api/v1"}/items/${newItem.id}/identify`,
         {
           method: "POST",
           headers: {
