@@ -19,10 +19,47 @@ export default function PublicDonatePage() {
   const [aiResult, setAiResult] = useState<IdentificationResult | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [condition, setCondition] = useState("");
+
+  const ITEM_TYPES = [
+    "Laptop",
+    "Desktop Computer",
+    "Server",
+    "Monitor / Display",
+    "Cell Phone",
+    "Tablet",
+    "Printer / Scanner",
+    "TV / Flat Screen",
+    "Keyboard",
+    "Mouse",
+    "Cables / Chargers / Power Supplies",
+    "Router / Modem / Switch",
+    "Gaming Console",
+    "Hard Drive / SSD",
+    "RAM / Memory",
+    "Graphics Card / GPU",
+    "Motherboard",
+    "CPU / Processor",
+    "Network Card / NIC",
+    "Battery / UPS",
+    "Speakers / Headphones",
+    "Camera / Webcam",
+    "Dock / Hub / KVM",
+    "Rack / Shelf / Rails",
+    "PDU / Power Strip",
+    "Tape Drive / Backup",
+    "Other",
+  ];
+
+  const toggleItem = (item: string) => {
+    setSelectedItems((prev) =>
+      prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item]
+    );
+  };
   const [donorName, setDonorName] = useState("");
   const [donorEmail, setDonorEmail] = useState("");
   const [donorPhone, setDonorPhone] = useState("");
@@ -85,6 +122,9 @@ export default function PublicDonatePage() {
       setDescription(result.description);
       setCategory(result.category || "");
       setCondition(result.condition || "");
+      if (result.category && ITEM_TYPES.includes(result.category)) {
+        setSelectedItems([result.category]);
+      }
       setStep("review");
     } catch (err) {
       setError((err as Error).message || "Something went wrong");
@@ -101,9 +141,9 @@ export default function PublicDonatePage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          title: title || "Donated Item",
+          title: selectedItems.length > 0 ? selectedItems.join(", ") : title || "Donated Item",
           description: description || "No description provided",
-          category: category || null,
+          category: selectedItems.length > 0 ? selectedItems[0] : category || null,
           condition: condition || null,
           donor_name: donorName || null,
           donor_email: donorEmail || null,
@@ -124,6 +164,7 @@ export default function PublicDonatePage() {
     setItemId(null);
     setAiResult(null);
     setError(null);
+    setSelectedItems([]);
     setTitle("");
     setDescription("");
     setCategory("");
@@ -260,30 +301,33 @@ export default function PublicDonatePage() {
                 </div>
               )}
               {!preview && !aiResult && (
-                <p className="text-sm text-gray-500 text-center">Tell us what you&apos;d like to donate</p>
+                <p className="text-sm text-gray-500 text-center">Select everything you&apos;d like to donate</p>
               )}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">What is it? <span className="text-red-500">*</span></label>
-                <select value={title} onChange={(e) => { setTitle(e.target.value); setCategory(e.target.value); }} className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none bg-white">
-                  <option value="">Select item type...</option>
-                  <option value="Laptop">Laptop</option>
-                  <option value="Desktop Computer">Desktop Computer</option>
-                  <option value="Monitor / Display">Monitor / Display</option>
-                  <option value="Cell Phone">Cell Phone</option>
-                  <option value="Tablet">Tablet</option>
-                  <option value="Printer / Scanner">Printer / Scanner</option>
-                  <option value="TV / Flat Screen">TV / Flat Screen</option>
-                  <option value="Keyboard / Mouse">Keyboard / Mouse</option>
-                  <option value="Cables / Chargers">Cables / Chargers</option>
-                  <option value="Router / Modem">Router / Modem</option>
-                  <option value="Gaming Console">Gaming Console</option>
-                  <option value="Hard Drive / SSD">Hard Drive / SSD</option>
-                  <option value="Server / Rack Equipment">Server / Rack Equipment</option>
-                  <option value="Battery / UPS">Battery / UPS</option>
-                  <option value="Speakers / Headphones">Speakers / Headphones</option>
-                  <option value="Camera / Webcam">Camera / Webcam</option>
-                  <option value="Other">Other</option>
-                </select>
+                <label className="block text-sm font-medium text-gray-700 mb-2">What are you donating? <span className="text-red-500">*</span></label>
+                <div className="flex flex-wrap gap-2">
+                  {ITEM_TYPES.map((item) => {
+                    const selected = selectedItems.includes(item);
+                    return (
+                      <button
+                        key={item}
+                        type="button"
+                        onClick={() => toggleItem(item)}
+                        className={`rounded-full px-3.5 py-1.5 text-sm font-medium border transition-colors ${
+                          selected
+                            ? "bg-emerald-600 text-white border-emerald-600"
+                            : "bg-white text-gray-700 border-gray-300 hover:border-emerald-400 hover:text-emerald-700"
+                        }`}
+                      >
+                        {selected && <span className="mr-1">&#10003;</span>}
+                        {item}
+                      </button>
+                    );
+                  })}
+                </div>
+                {selectedItems.length > 0 && (
+                  <p className="mt-2 text-xs text-gray-500">{selectedItems.length} item{selectedItems.length > 1 ? "s" : ""} selected</p>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Details <span className="text-gray-400 font-normal">(optional)</span></label>
@@ -298,7 +342,7 @@ export default function PublicDonatePage() {
                   <option value="unknown">Powers on but untested</option>
                 </select>
               </div>
-              <button onClick={handleNext} disabled={!title.trim()} className="w-full rounded-lg bg-emerald-600 px-4 py-3 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+              <button onClick={handleNext} disabled={selectedItems.length === 0} className="w-full rounded-lg bg-emerald-600 px-4 py-3 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
                 Next: Contact Info
               </button>
             </div>
