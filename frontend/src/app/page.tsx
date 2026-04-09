@@ -22,10 +22,10 @@ export default function Home() {
               </p>
               <div className="mt-10 flex flex-wrap gap-4">
                 <Link
-                  href="/register"
+                  href="/donate"
                   className="rounded-lg bg-white px-6 py-3 text-sm font-semibold text-emerald-700 shadow-sm hover:bg-emerald-50 transition-colors"
                 >
-                  Start Recycling
+                  Donate Now
                 </Link>
                 <Link
                   href="/how-it-works"
