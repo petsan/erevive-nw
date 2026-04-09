@@ -26,9 +26,7 @@ class AIProvider(ABC):
     name: AIProviderName
 
     @abstractmethod
-    async def identify_item(
-        self, image_bytes: bytes, content_type: str
-    ) -> IdentificationResult: ...
+    async def identify_item(self, image_bytes: bytes, content_type: str) -> IdentificationResult: ...
 
     @abstractmethod
     async def health_check(self) -> bool: ...

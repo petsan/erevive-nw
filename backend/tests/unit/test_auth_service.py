@@ -59,26 +59,20 @@ async def test_authenticate_returns_user(auth_service: AuthService, db_session: 
 
 
 @pytest.mark.asyncio
-async def test_authenticate_wrong_password_returns_none(
-    auth_service: AuthService, db_session: AsyncSession
-):
+async def test_authenticate_wrong_password_returns_none(auth_service: AuthService, db_session: AsyncSession):
     await _create_user(db_session, email="login2@example.com", password="correct")
     user = await auth_service.authenticate(db_session, "login2@example.com", "wrong")
     assert user is None
 
 
 @pytest.mark.asyncio
-async def test_authenticate_nonexistent_email_returns_none(
-    auth_service: AuthService, db_session: AsyncSession
-):
+async def test_authenticate_nonexistent_email_returns_none(auth_service: AuthService, db_session: AsyncSession):
     user = await auth_service.authenticate(db_session, "nobody@example.com", "password")
     assert user is None
 
 
 @pytest.mark.asyncio
-async def test_authenticate_inactive_user_returns_none(
-    auth_service: AuthService, db_session: AsyncSession
-):
+async def test_authenticate_inactive_user_returns_none(auth_service: AuthService, db_session: AsyncSession):
     user = await _create_user(db_session, email="inactive@example.com")
     user.is_active = False
     await db_session.commit()
