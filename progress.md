@@ -4,7 +4,8 @@
 E-waste recycling platform for Seattle, WA. Users upload photos of electronics, get AI-powered descriptions, and schedule pickups. Admins see pricing data and manage operations.
 
 ## Tech Stack
-- **Frontend:** Next.js 16 + React 19 + Tailwind CSS (7 routes)
+- **Frontend (Web):** Next.js 16 + React 19 + Tailwind CSS (7 routes)
+- **Mobile (iOS + Android):** React Native + Expo SDK 54 + Expo Router (5 screens)
 - **Backend:** Python 3.12 FastAPI + SQLAlchemy 2.0 + Alembic (53 tests)
 - **Database:** PostgreSQL 17 (SSL) — 6 tables
 - **AI:** Multi-provider (LM Studio default, Claude, OpenAI, Gemini)
@@ -85,6 +86,21 @@ E-waste recycling platform for Seattle, WA. Users upload photos of electronics, 
 | AI providers | 4 |
 | Cloud targets | 4 (Proxmox + AWS + GCP + Azure) |
 | Deploy scripts | 4 |
+
+## Mobile App (iOS + Android) — COMPLETE
+
+- [x] React Native + Expo SDK 54 with Expo Router (file-based navigation)
+- [x] Auth screens: login, register with Zod validation
+- [x] Secure token storage (expo-secure-store: Keychain/EncryptedSharedPreferences)
+- [x] Auto token refresh on 401
+- [x] Tab navigation: Home, Donate, Pickups, Profile
+- [x] Dashboard with item listing + pull-to-refresh
+- [x] Donation flow: camera/gallery → upload → AI identification → review/edit → submit
+- [x] Pickup scheduling with date, time window, address, Seattle ZIP validation
+- [x] Profile screen with user info + sign out
+- [x] Typed API client mirroring web patterns
+- [x] CI: TypeScript check in GitHub Actions
+- [x] Configured for both iOS (bundleIdentifier) and Android (package)
 
 ### Key Architecture Decisions
 - **AI fallback chain:** LM Studio → Claude → OpenAI → Gemini

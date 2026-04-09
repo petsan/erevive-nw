@@ -1,0 +1,50 @@
+{
+  "expo": {
+    "name": "eRevive NW",
+    "slug": "erevive-nw",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "scheme": "erevive",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#059669"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.erevivenw.app",
+      "infoPlist": {
+        "NSCameraUsageDescription": "eRevive NW needs camera access to photograph electronics for donation.",
+        "NSPhotoLibraryUsageDescription": "eRevive NW needs photo library access to select images of electronics."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#059669"
+      },
+      "package": "com.erevivenw.app",
+      "edgeToEdgeEnabled": true,
+      "permissions": ["CAMERA", "READ_EXTERNAL_STORAGE"]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "eRevive NW needs photo access to select images of electronics for donation."
+        }
+      ]
+    ],
+    "extra": {
+      "apiUrl": "http://192.168.0.100/api/v1"
+    }
+  }
+}
