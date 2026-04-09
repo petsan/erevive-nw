@@ -16,7 +16,13 @@ describe("Donate Page (/donate)", () => {
     render(<DonatePage />);
     expect(screen.getByText("Upload a photo")).toBeInTheDocument();
     expect(screen.getByText("Describe it")).toBeInTheDocument();
-    expect(screen.getByText("Bring it myself")).toBeInTheDocument();
+    expect(screen.getByText("Just bring it")).toBeInTheDocument();
+  });
+
+  it("Just bring it shows address and acceptance note", () => {
+    render(<DonatePage />);
+    expect(screen.getByText(/123 Paper St/)).toBeInTheDocument();
+    expect(screen.getByText(/Some items may not be accepted/i)).toBeInTheDocument();
   });
 
   it("shows photo upload when Upload option clicked", () => {

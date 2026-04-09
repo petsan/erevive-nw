@@ -1,7 +1,7 @@
 """Public donation endpoints — no login required."""
 
 from fastapi import APIRouter, Depends, UploadFile, status
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.exceptions import NotFoundError

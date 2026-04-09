@@ -90,7 +90,9 @@ class PickupService:
         result = await db.execute(stmt)
         return list(result.scalars().all())
 
-    async def update_pickup_status(self, db: AsyncSession, pickup_id: str, status: str, admin_notes: str | None = None) -> Pickup | None:
+    async def update_pickup_status(
+        self, db: AsyncSession, pickup_id: str, status: str, admin_notes: str | None = None,
+    ) -> Pickup | None:
         pickup = await self.get_pickup(db, pickup_id)
         if not pickup:
             return None

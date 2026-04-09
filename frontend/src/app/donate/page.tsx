@@ -211,20 +211,25 @@ export default function PublicDonatePage() {
                 </div>
               </button>
 
-              <button onClick={handleDescribeManually} className="w-full bg-white rounded-xl border border-gray-200 p-6 text-left hover:border-emerald-400 hover:shadow-sm transition-all group">
+              <div className="bg-white rounded-xl border border-gray-200 p-6">
                 <div className="flex items-center gap-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 text-gray-600 group-hover:bg-emerald-100 group-hover:text-emerald-700 transition-colors">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 text-gray-600">
                     <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900">Bring it myself</h3>
-                    <p className="text-sm text-gray-500 mt-0.5">Drop off at our Seattle location — tell us what you&apos;re bringing</p>
+                    <h3 className="font-semibold text-gray-900">Just bring it</h3>
+                    <p className="text-sm text-gray-500 mt-0.5">Drop off during business hours, no appointment needed</p>
                   </div>
                 </div>
-              </button>
+                <div className="mt-4 rounded-lg bg-gray-50 p-4">
+                  <p className="text-sm font-medium text-gray-900">123 Paper St, Seattle, WA 98101</p>
+                  <p className="text-sm text-gray-600 mt-1">Mon - Fri: 9am - 5pm &middot; Sat: 10am - 2pm</p>
+                  <p className="text-xs text-amber-700 bg-amber-50 rounded px-2 py-1 mt-2 inline-block">Note: Some items may not be accepted. Hazardous materials, CRT monitors, and items containing refrigerant require special handling.</p>
+                </div>
+              </div>
             </div>
           )}
 

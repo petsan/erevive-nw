@@ -10,9 +10,10 @@ from app.config import settings
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup: ensure anonymous donor user exists
+    from sqlalchemy import select
+
     from app.db.session import async_session
     from app.models.user import User
-    from sqlalchemy import select
 
     async with async_session() as db:
         result = await db.execute(select(User).where(User.id == "anonymous"))

@@ -3,7 +3,6 @@ from datetime import date
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.exceptions import ForbiddenError, NotFoundError
 from app.db.session import get_db
 from app.dependencies import get_current_user_id
 from app.schemas.pickup import PickupCreate, PickupResponse
