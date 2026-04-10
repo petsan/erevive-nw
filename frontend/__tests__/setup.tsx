@@ -1,4 +1,5 @@
 import "@testing-library/jest-dom/vitest";
+import React from "react";
 
 // Mock next/navigation
 vi.mock("next/navigation", () => ({
@@ -14,14 +15,14 @@ vi.mock("next/navigation", () => ({
 
 // Mock next/link
 vi.mock("next/link", () => ({
-  default: ({ children, href, ...props }: any) => (
+  default: ({ children, href, ...props }: { children: React.ReactNode; href: string; [key: string]: unknown }) => (
     <a href={href} {...props}>{children}</a>
   ),
 }));
 
 // Mock next/image
 vi.mock("next/image", () => ({
-  default: (props: any) => <img {...props} />,
+  default: (props: Record<string, unknown>) => <img {...props} />,
 }));
 
 // Mock fetch globally

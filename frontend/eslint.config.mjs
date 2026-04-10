@@ -5,14 +5,26 @@ import nextTs from "eslint-config-next/typescript";
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
-  // Override default ignores of eslint-config-next.
   globalIgnores([
-    // Default ignores of eslint-config-next:
     ".next/**",
     "out/**",
     "build/**",
     "next-env.d.ts",
   ]),
+  {
+    rules: {
+      // User-uploaded blob URLs can't use next/image
+      "@next/next/no-img-element": "warn",
+    },
+  },
+  {
+    files: ["__tests__/**"],
+    rules: {
+      "@typescript-eslint/no-explicit-any": "off",
+      "@next/next/no-img-element": "off",
+      "jsx-a11y/alt-text": "off",
+    },
+  },
 ]);
 
 export default eslintConfig;

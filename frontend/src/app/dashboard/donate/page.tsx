@@ -15,7 +15,6 @@ export default function DonatePage() {
   const [step, setStep] = useState<Step>("upload");
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
-  const [item, setItem] = useState<ItemResponse | null>(null);
   const [aiResult, setAiResult] = useState<IdentificationResult | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -51,8 +50,6 @@ export default function DonatePage() {
         { title: "Pending identification", description: "Uploading..." },
         { token },
       );
-      setItem(newItem);
-
       // 2. Upload image
       const formData = new FormData();
       formData.append("file", file);
