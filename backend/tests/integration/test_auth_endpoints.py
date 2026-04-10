@@ -37,7 +37,7 @@ async def test_register_duplicate_email(client: AsyncClient):
 async def test_register_invalid_email(client: AsyncClient):
     response = await client.post(
         "/api/v1/auth/register",
-        json={"email": "not-an-email", "password": "pass123", "full_name": "Bad Email"},
+        json={"email": "not-an-email", "password": "securepass123", "full_name": "Bad Email"},
     )
     assert response.status_code == 422
 
@@ -87,7 +87,7 @@ async def test_refresh_token(client: AsyncClient):
     # Register and get tokens
     reg_response = await client.post(
         "/api/v1/auth/register",
-        json={"email": "refresh@example.com", "password": "pass123", "full_name": "Refresh User"},
+        json={"email": "refresh@example.com", "password": "securepass123", "full_name": "Refresh User"},
     )
     refresh_token = reg_response.json()["refresh_token"]
 
@@ -115,7 +115,7 @@ async def test_get_current_user(client: AsyncClient):
     # Register
     reg_response = await client.post(
         "/api/v1/auth/register",
-        json={"email": "me@example.com", "password": "pass123", "full_name": "Me User"},
+        json={"email": "me@example.com", "password": "securepass123", "full_name": "Me User"},
     )
     token = reg_response.json()["access_token"]
 

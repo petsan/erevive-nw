@@ -44,10 +44,17 @@ async def override_get_db() -> AsyncGenerator[AsyncSession, None]:
 
 @pytest.fixture
 async def client() -> AsyncGenerator[AsyncClient, None]:
+    # Disable rate limiting before creating the app
+    from app.core.rate_limit import limiter
+
+    limiter.enabled = False
+
     app = create_app()
     app.dependency_overrides[get_db] = override_get_db
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
         yield ac
+
+    limiter.enabled = True
 
 
 @pytest.fixture

@@ -14,7 +14,6 @@ class AuthService:
         full_name: str,
         phone: str | None = None,
     ) -> User:
-        # Check for existing user
         stmt = select(User).where(User.email == email)
         result = await db.execute(stmt)
         existing = result.scalar_one_or_none()
@@ -43,6 +42,9 @@ class AuthService:
         if not user.is_active:
             return None
         if not verify_password(password, user.password_hash):
+            # Increment failed login attempts
+            user.failed_login_attempts += 1
+            await db.commit()
             return None
 
         return user

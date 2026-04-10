@@ -36,9 +36,25 @@ def validate_image(data: bytes, claimed_content_type: str) -> str:
 storage = LocalStorage()
 
 
+def strip_exif(data: bytes, content_type: str) -> bytes:
+    """Remove EXIF metadata from images to prevent location/device info leakage."""
+    try:
+        from io import BytesIO
+
+        from PIL import Image
+
+        img = Image.open(BytesIO(data))
+        clean = BytesIO()
+        img.save(clean, format=img.format or "JPEG")
+        return clean.getvalue()
+    except Exception:
+        return data  # Return original if stripping fails
+
+
 async def save_upload(data: bytes, filename: str, content_type: str) -> str:
-    """Validate and save uploaded image. Returns storage path."""
+    """Validate, strip EXIF, and save uploaded image. Returns storage path."""
     detected_type = validate_image(data, content_type)
+    data = strip_exif(data, detected_type)
     return await storage.save(data, filename, detected_type)
 
 

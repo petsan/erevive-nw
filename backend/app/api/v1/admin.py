@@ -1,6 +1,7 @@
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.audit import log_action
 from app.core.exceptions import ForbiddenError, NotFoundError
 from app.db.session import get_db
 from app.dependencies import get_current_user_id
@@ -39,13 +40,23 @@ async def list_all_items(
 @router.patch("/items/{item_id}", response_model=ItemResponse)
 async def update_item_status(
     item_id: str,
+    request: Request,
     status: str = Query(...),
-    _admin_id: str = Depends(require_admin),
+    admin_id: str = Depends(require_admin),
     db: AsyncSession = Depends(get_db),
 ):
     item = await item_service.update_item_status(db, item_id, status)
     if not item:
         raise NotFoundError("Item not found")
+    await log_action(
+        db,
+        "admin.item_status_change",
+        user_id=admin_id,
+        resource_type="item",
+        resource_id=item_id,
+        details={"new_status": status},
+        ip_address=request.client.host if request.client else None,
+    )
     return item
 
 
@@ -62,37 +73,54 @@ async def list_all_pickups(
 async def update_pickup(
     pickup_id: str,
     update: PickupAdminUpdate,
-    _admin_id: str = Depends(require_admin),
+    request: Request,
+    admin_id: str = Depends(require_admin),
     db: AsyncSession = Depends(get_db),
 ):
     pickup = await pickup_service.update_pickup_status(
-        db, pickup_id, status=update.status or "confirmed", admin_notes=update.admin_notes
+        db,
+        pickup_id,
+        status=update.status or "confirmed",
+        admin_notes=update.admin_notes,
     )
     if not pickup:
         raise NotFoundError("Pickup not found")
+    await log_action(
+        db,
+        "admin.pickup_update",
+        user_id=admin_id,
+        resource_type="pickup",
+        resource_id=pickup_id,
+        details={"new_status": update.status},
+        ip_address=request.client.host if request.client else None,
+    )
     return pickup
 
 
 @router.get("/pricing/{item_id}", response_model=PriceLookupResponse)
 async def get_item_pricing(
     item_id: str,
-    _admin_id: str = Depends(require_admin),
+    request: Request,
+    admin_id: str = Depends(require_admin),
     db: AsyncSession = Depends(get_db),
 ):
     """Get price lookup for an item. ADMIN ONLY."""
+    await log_action(
+        db,
+        "admin.pricing_lookup",
+        user_id=admin_id,
+        resource_type="item",
+        resource_id=item_id,
+        ip_address=request.client.host if request.client else None,
+    )
     lookup = await pricing_service.get_price_lookup(db, item_id)
     if not lookup:
-        # Trigger a lookup
         item = await item_service.get_item(db, item_id)
         if not item:
             raise NotFoundError("Item not found")
-
         query = f"{item.brand or ''} {item.model_name or ''} {item.category or ''}".strip()
         price_data = await pricing_service.lookup_price_ebay(query)
-        lookup = await pricing_service.create_price_lookup(
-            db=db, item_id=item_id, **price_data
-        )
-
+        lookup = await pricing_service.create_price_lookup(db=db, item_id=item_id, **price_data)
     return lookup
 
 

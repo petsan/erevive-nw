@@ -75,11 +75,13 @@ class PickupService:
             )
             count_result = await db.execute(stmt)
             count = count_result.scalar() or 0
-            result.append({
-                "time_window": window,
-                "available": count < MAX_PICKUPS_PER_SLOT,
-                "remaining": MAX_PICKUPS_PER_SLOT - count,
-            })
+            result.append(
+                {
+                    "time_window": window,
+                    "available": count < MAX_PICKUPS_PER_SLOT,
+                    "remaining": MAX_PICKUPS_PER_SLOT - count,
+                }
+            )
 
         return result
 
@@ -91,7 +93,11 @@ class PickupService:
         return list(result.scalars().all())
 
     async def update_pickup_status(
-        self, db: AsyncSession, pickup_id: str, status: str, admin_notes: str | None = None,
+        self,
+        db: AsyncSession,
+        pickup_id: str,
+        status: str,
+        admin_notes: str | None = None,
     ) -> Pickup | None:
         pickup = await self.get_pickup(db, pickup_id)
         if not pickup:
