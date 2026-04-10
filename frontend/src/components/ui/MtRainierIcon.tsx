@@ -2,77 +2,56 @@ export default function MtRainierIcon({ className = "", size = 40 }: { className
   return (
     <svg
       width={size}
-      height={size * 0.7}
-      viewBox="0 0 240 168"
+      height={size * 0.75}
+      viewBox="0 0 200 150"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
       aria-label="Mt. Rainier"
     >
-      {/* White mountain body */}
+      {/* Sun behind summit */}
+      <circle cx="90" cy="22" r="14" fill="#e8943a" stroke="#222" strokeWidth="2.5" />
+
+      {/* Mountain outline — broad dome like the real Rainier */}
       <path
-        d="M0 168 L8 148 L18 132 L30 118 L42 106 L55 94 L65 84 L75 72 L84 60
-           L92 48 L98 38 L104 28 L110 20 L116 14 L120 10 L124 14 L128 18
-           L134 26 L140 36 L146 46 L152 56 L160 68 L168 78 L178 90 L188 102
-           L198 114 L208 128 L218 142 L228 154 L240 168 Z"
-        fill="white"
+        d="M10 95 L30 78 L48 65 L62 52 L74 40 L84 30 L92 22 L100 18
+           L108 22 L116 30 L126 40 L138 52 L152 65 L170 78 L190 95"
         stroke="#222"
-        strokeWidth="2"
+        strokeWidth="3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
 
-      {/* Glacier outlines — Tahoma (left face) */}
-      <path
-        d="M75 72 L84 60 L92 48 L98 38 L102 42 L96 54 L90 64 L84 72 L78 78 L72 82"
-        stroke="#333"
-        strokeWidth="1.5"
-        fill="none"
-      />
+      {/* Glacier lines — curved strokes on the mountain face */}
+      <path d="M68 56 L74 48 L78 52 L84 44" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M82 58 L88 50 L92 54" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M116 44 L122 52 L126 48 L132 56" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M108 54 L112 50 L118 58" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M56 68 L62 62 L66 66" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M134 66 L140 62 L144 68" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
 
-      {/* Nisqually glacier (center-left) */}
-      <path
-        d="M106 32 L110 26 L116 20 L118 28 L114 40 L108 52 L102 62 L96 72 L90 80"
-        stroke="#333"
-        strokeWidth="1.5"
-        fill="none"
-      />
+      {/* Treeline — row of simple arrow trees */}
+      {[20, 36, 52, 68, 84, 100, 116, 132, 148, 164, 180].map((x) => (
+        <path
+          key={x}
+          d={`M${x} 112 L${x - 6} 104 L${x - 3} 104 L${x - 8} 96 L${x} 88 L${x + 8} 96 L${x + 3} 104 L${x + 6} 104 Z`}
+          fill="#222"
+        />
+      ))}
 
-      {/* Rock cleaver — Gibraltar Rock between Nisqually and Ingraham */}
-      <path
-        d="M106 32 L108 38 L106 46 L102 56 L98 64"
-        stroke="#222"
-        strokeWidth="2"
-        fill="none"
-      />
+      {/* Ground line under trees */}
+      <line x1="8" y1="113" x2="192" y2="113" stroke="#222" strokeWidth="2.5" />
 
-      {/* Ingraham / Emmons glacier divide */}
-      <path
-        d="M120 18 L122 26 L122 36 L120 46"
-        stroke="#222"
-        strokeWidth="2"
-        fill="none"
-      />
-
-      {/* Emmons/Winthrop glacier (right face) */}
-      <path
-        d="M124 22 L130 28 L136 34 L140 36 L146 46 L152 56 L148 58 L142 52 L136 44"
-        stroke="#333"
-        strokeWidth="1.5"
-        fill="none"
-      />
-
-      {/* Lower ridgeline texture */}
-      <path
-        d="M55 94 L60 100 L65 94"
-        stroke="#444"
-        strokeWidth="1"
-        fill="none"
-      />
-      <path
-        d="M178 90 L183 96 L188 90"
-        stroke="#444"
-        strokeWidth="1"
-        fill="none"
-      />
+      {/* Water / ground dashes */}
+      <line x1="30" y1="124" x2="50" y2="124" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
+      <line x1="60" y1="124" x2="76" y2="124" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
+      <line x1="90" y1="124" x2="110" y2="124" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
+      <line x1="122" y1="124" x2="138" y2="124" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
+      <line x1="150" y1="124" x2="170" y2="124" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
+      <line x1="44" y1="134" x2="60" y2="134" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
+      <line x1="76" y1="134" x2="88" y2="134" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
+      <line x1="106" y1="134" x2="124" y2="134" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
+      <line x1="140" y1="134" x2="156" y2="134" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
     </svg>
   );
 }
