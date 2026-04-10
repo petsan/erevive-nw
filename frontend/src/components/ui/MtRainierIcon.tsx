@@ -2,56 +2,53 @@ export default function MtRainierIcon({ className = "", size = 40 }: { className
   return (
     <svg
       width={size}
-      height={size * 0.75}
-      viewBox="0 0 200 150"
+      height={size * 0.65}
+      viewBox="0 0 200 130"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
       aria-label="Mt. Rainier"
     >
-      {/* Sun behind summit */}
-      <circle cx="90" cy="22" r="14" fill="#e8943a" stroke="#222" strokeWidth="2.5" />
-
-      {/* Mountain outline — broad dome like the real Rainier */}
+      {/* Mountain outline — broad, flat-topped dome */}
       <path
-        d="M10 95 L30 78 L48 65 L62 52 L74 40 L84 30 L92 22 L100 18
-           L108 22 L116 30 L126 40 L138 52 L152 65 L170 78 L190 95"
+        d="M5 75 L25 65 L45 54 L60 44 L72 36 L80 30 L88 26 L96 24
+           L104 24 L112 26 L120 30 L128 36 L140 44 L155 54 L175 65 L195 75"
         stroke="#222"
         strokeWidth="3"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
 
-      {/* Glacier lines — curved strokes on the mountain face */}
-      <path d="M68 56 L74 48 L78 52 L84 44" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
-      <path d="M82 58 L88 50 L92 54" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
-      <path d="M116 44 L122 52 L126 48 L132 56" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
-      <path d="M108 54 L112 50 L118 58" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
-      <path d="M56 68 L62 62 L66 66" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
-      <path d="M134 66 L140 62 L144 68" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
+      {/* Glacier lines on face */}
+      <path d="M66 46 L72 40 L76 44" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M80 50 L86 42 L90 46 L94 38" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M106 38 L110 46 L114 42 L120 50" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M124 44 L128 40 L134 46" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M52 56 L58 50 L62 54" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M138 54 L144 50 L148 56" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
 
-      {/* Treeline — row of simple arrow trees */}
-      {[20, 36, 52, 68, 84, 100, 116, 132, 148, 164, 180].map((x) => (
+      {/* Treeline */}
+      {[18, 34, 50, 66, 82, 98, 114, 130, 146, 162, 178].map((x) => (
         <path
           key={x}
-          d={`M${x} 112 L${x - 6} 104 L${x - 3} 104 L${x - 8} 96 L${x} 88 L${x + 8} 96 L${x + 3} 104 L${x + 6} 104 Z`}
+          d={`M${x} 92 L${x - 5} 85 L${x - 2.5} 85 L${x - 7} 78 L${x} 71 L${x + 7} 78 L${x + 2.5} 85 L${x + 5} 85 Z`}
           fill="#222"
         />
       ))}
 
-      {/* Ground line under trees */}
-      <line x1="8" y1="113" x2="192" y2="113" stroke="#222" strokeWidth="2.5" />
+      {/* Ground line */}
+      <line x1="5" y1="93" x2="195" y2="93" stroke="#222" strokeWidth="2.5" />
 
-      {/* Water / ground dashes */}
-      <line x1="30" y1="124" x2="50" y2="124" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
-      <line x1="60" y1="124" x2="76" y2="124" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
-      <line x1="90" y1="124" x2="110" y2="124" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
-      <line x1="122" y1="124" x2="138" y2="124" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
-      <line x1="150" y1="124" x2="170" y2="124" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
-      <line x1="44" y1="134" x2="60" y2="134" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
-      <line x1="76" y1="134" x2="88" y2="134" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
-      <line x1="106" y1="134" x2="124" y2="134" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
-      <line x1="140" y1="134" x2="156" y2="134" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
+      {/* Water dashes */}
+      <line x1="28" y1="103" x2="48" y2="103" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
+      <line x1="58" y1="103" x2="74" y2="103" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
+      <line x1="88" y1="103" x2="112" y2="103" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
+      <line x1="124" y1="103" x2="142" y2="103" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
+      <line x1="152" y1="103" x2="172" y2="103" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
+      <line x1="40" y1="113" x2="56" y2="113" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
+      <line x1="70" y1="113" x2="86" y2="113" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
+      <line x1="100" y1="113" x2="120" y2="113" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
+      <line x1="134" y1="113" x2="152" y2="113" stroke="#222" strokeWidth="2.5" strokeLinecap="round" />
     </svg>
   );
 }
