@@ -16,7 +16,7 @@ export const PICKUP_TIME_WINDOWS = [
 export const ITEM_GROUPS = [
   {
     label: "Computers",
-    items: ["Desktop Computer", "Laptop", "Server", "Tablet"],
+    items: ["Desktop Computer", "Laptop", "Server"],
   },
   {
     label: "Components",
@@ -58,7 +58,7 @@ export const ITEM_GROUPS = [
   },
   {
     label: "Infrastructure",
-    items: ["Rack / Shelf / Rails", "Server", "Tape Drive / Backup"],
+    items: ["Rack / Shelf / Rails", "Tape Drive / Backup"],
   },
   {
     label: "Entertainment",

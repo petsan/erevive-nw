@@ -51,9 +51,10 @@ export default function PublicDonatePage() {
     const selected = e.target.files?.[0];
     if (!selected) return;
     setFile(selected);
+    if (preview) URL.revokeObjectURL(preview);
     setPreview(URL.createObjectURL(selected));
     setError(null);
-  }, []);
+  }, [preview]);
 
   const handleDescribeManually = async () => {
     setError(null);
@@ -76,10 +77,22 @@ export default function PublicDonatePage() {
       const uploadResp = await fetch(`${API}/donate/${id}/upload`, { method: "POST", body: formData });
       if (!uploadResp.ok) throw new Error("Upload failed");
 
-      const idResp = await fetch(`${API}/donate/${id}/identify`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      });
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 30000);
+      let idResp: Response;
+      try {
+        idResp = await fetch(`${API}/donate/${id}/identify`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          signal: controller.signal,
+        });
+      } catch {
+        clearTimeout(timeout);
+        setError("AI identification timed out. You can describe the item manually.");
+        setStep("review");
+        return;
+      }
+      clearTimeout(timeout);
       if (!idResp.ok) {
         setStep("review");
         return;
@@ -132,6 +145,7 @@ export default function PublicDonatePage() {
   const reset = () => {
     setStep("choose");
     setFile(null);
+    if (preview) URL.revokeObjectURL(preview);
     setPreview(null);
     setItemId(null);
     setAiResult(null);

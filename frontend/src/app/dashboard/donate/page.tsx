@@ -28,9 +28,10 @@ export default function DonatePage() {
     const selected = e.target.files?.[0];
     if (!selected) return;
     setFile(selected);
+    if (preview) URL.revokeObjectURL(preview);
     setPreview(URL.createObjectURL(selected));
     setError(null);
-  }, []);
+  }, [preview]);
 
   const handleUploadAndIdentify = async () => {
     if (!file) return;

@@ -63,17 +63,17 @@ export default function Header() {
         {/* Mobile menu */}
         {mobileMenuOpen && (
           <div className="sm:hidden py-4 space-y-2">
-            <Link href="/how-it-works" className="block px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-md">
+            <Link href="/how-it-works" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-md">
               How It Works
             </Link>
-            <Link href="/about" className="block px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-md">
+            <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-md">
               About
             </Link>
-            <Link href="/login" className="block px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-md">
+            <Link href="/login" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-md">
               Sign In
             </Link>
-            <Link href="/register" className="block px-3 py-2 text-sm font-medium text-white bg-[#2d5016] hover:bg-[#1a3a0a] rounded-md text-center">
-              Get Started
+            <Link href="/donate" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-2 text-sm font-medium text-white bg-[#2d5016] hover:bg-[#1a3a0a] rounded-md text-center">
+              Donate Now
             </Link>
           </div>
         )}

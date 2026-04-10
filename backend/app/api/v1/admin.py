@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Query, Request
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.audit import log_action
@@ -12,6 +12,9 @@ from app.services.auth_service import AuthService
 from app.services.item_service import ItemService
 from app.services.pickup_service import PickupService
 from app.services.pricing_service import PricingService
+
+VALID_ITEM_STATUSES = {"pending", "submitted", "approved", "scheduled", "picked_up", "processed", "rejected"}
+VALID_PICKUP_STATUSES = {"requested", "confirmed", "en_route", "completed", "cancelled"}
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
@@ -45,6 +48,9 @@ async def update_item_status(
     admin_id: str = Depends(require_admin),
     db: AsyncSession = Depends(get_db),
 ):
+    if status not in VALID_ITEM_STATUSES:
+        valid = ", ".join(sorted(VALID_ITEM_STATUSES))
+        raise HTTPException(status_code=422, detail=f"Invalid status. Must be one of: {valid}")
     item = await item_service.update_item_status(db, item_id, status)
     if not item:
         raise NotFoundError("Item not found")
@@ -77,6 +83,10 @@ async def update_pickup(
     admin_id: str = Depends(require_admin),
     db: AsyncSession = Depends(get_db),
 ):
+    new_status = update.status or "confirmed"
+    if new_status not in VALID_PICKUP_STATUSES:
+        valid = ", ".join(sorted(VALID_PICKUP_STATUSES))
+        raise HTTPException(status_code=422, detail=f"Invalid status. Must be one of: {valid}")
     pickup = await pickup_service.update_pickup_status(
         db,
         pickup_id,

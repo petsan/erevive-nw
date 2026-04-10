@@ -11,15 +11,18 @@ import type { ItemResponse } from "@/types/api";
 export default function DashboardPage() {
   const { user, loading, getToken } = useAuth();
   const [items, setItems] = useState<ItemResponse[]>([]);
+  const [fetchError, setFetchError] = useState(false);
 
   useEffect(() => {
-    if (user) {
-      const token = getToken();
-      if (token) {
-        api.get<ItemResponse[]>("/items", { token }).then(setItems).catch(() => {});
-      }
-    }
-  }, [user, getToken]);
+    if (!user) return;
+    const token = getToken();
+    if (!token) return;
+    setFetchError(false);
+    api.get<ItemResponse[]>("/items", { token })
+      .then(setItems)
+      .catch(() => setFetchError(true));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   if (loading) {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
@@ -45,7 +48,13 @@ export default function DashboardPage() {
             </Link>
           </div>
 
-          {items.length === 0 ? (
+          {fetchError && (
+            <div className="mb-4 rounded-lg bg-red-50 border border-red-200 p-4 text-sm text-red-700">
+              Could not load your items. Please try refreshing the page.
+            </div>
+          )}
+
+          {items.length === 0 && !fetchError ? (
             <div className="text-center py-16 bg-white rounded-xl border border-gray-200">
               <h3 className="text-lg font-medium text-gray-900">No items yet</h3>
               <p className="mt-2 text-sm text-gray-600">

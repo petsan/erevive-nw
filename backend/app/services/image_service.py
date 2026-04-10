@@ -48,7 +48,8 @@ def strip_exif(data: bytes, content_type: str) -> bytes:
         img.save(clean, format=img.format or "JPEG")
         return clean.getvalue()
     except Exception:
-        return data  # Return original if stripping fails
+        logger.warning("EXIF stripping failed, storing original image with metadata intact")
+        return data
 
 
 async def save_upload(data: bytes, filename: str, content_type: str) -> str:

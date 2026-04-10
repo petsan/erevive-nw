@@ -50,7 +50,8 @@ export interface IdentificationResult {
   description: string;
   category: string | null;
   brand: string | null;
-  model: string | null;
+  model_name: string | null;
   condition: string | null;
   confidence: number;
+  provider: string;
 }
