@@ -39,7 +39,7 @@ export default function DashboardPage() {
             </div>
             <Link
               href="/dashboard/donate"
-              className="rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-emerald-700 transition-colors"
+              className="rounded-lg bg-[#2d5016] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#1a3a0a] transition-colors"
             >
               Donate an Item
             </Link>
@@ -53,7 +53,7 @@ export default function DashboardPage() {
               </p>
               <Link
                 href="/dashboard/donate"
-                className="mt-6 inline-flex rounded-lg bg-emerald-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-emerald-700 transition-colors"
+                className="mt-6 inline-flex rounded-lg bg-[#2d5016] px-6 py-2.5 text-sm font-semibold text-white hover:bg-[#1a3a0a] transition-colors"
               >
                 Upload a Photo
               </Link>

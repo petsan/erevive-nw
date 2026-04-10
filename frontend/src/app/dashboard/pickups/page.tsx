@@ -71,7 +71,7 @@ export default function SchedulePickupPage() {
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
                 min={new Date().toISOString().split("T")[0]}
-                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none"
+                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-green-600 focus:ring-2 focus:ring-green-700/20 outline-none"
               />
             </div>
 
@@ -81,7 +81,7 @@ export default function SchedulePickupPage() {
                 required
                 value={timeWindow}
                 onChange={(e) => setTimeWindow(e.target.value)}
-                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none"
+                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-green-600 focus:ring-2 focus:ring-green-700/20 outline-none"
               >
                 <option value="">Select a time...</option>
                 {PICKUP_TIME_WINDOWS.map((w) => (
@@ -98,7 +98,7 @@ export default function SchedulePickupPage() {
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
                 placeholder="123 Pine Street"
-                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none"
+                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-green-600 focus:ring-2 focus:ring-green-700/20 outline-none"
               />
             </div>
 
@@ -108,7 +108,7 @@ export default function SchedulePickupPage() {
                 type="text"
                 value={address2}
                 onChange={(e) => setAddress2(e.target.value)}
-                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none"
+                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-green-600 focus:ring-2 focus:ring-green-700/20 outline-none"
               />
             </div>
 
@@ -124,7 +124,7 @@ export default function SchedulePickupPage() {
                 className={`w-full rounded-lg border px-4 py-2.5 text-sm outline-none ${
                   zipCode.length >= 3 && !isValidZip
                     ? "border-red-300 focus:border-red-500 focus:ring-red-500/20"
-                    : "border-gray-300 focus:border-emerald-500 focus:ring-emerald-500/20"
+                    : "border-gray-300 focus:border-green-600 focus:ring-green-700/20"
                 } focus:ring-2`}
               />
               {zipCode.length >= 3 && !isValidZip && (
@@ -141,14 +141,14 @@ export default function SchedulePickupPage() {
                 onChange={(e) => setInstructions(e.target.value)}
                 rows={2}
                 placeholder="Gate code, where to find items, etc."
-                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none"
+                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-green-600 focus:ring-2 focus:ring-green-700/20 outline-none"
               />
             </div>
 
             <button
               type="submit"
               disabled={submitting || !isValidZip || !date || !timeWindow || !address}
-              className="w-full rounded-lg bg-emerald-600 px-4 py-3 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="w-full rounded-lg bg-[#2d5016] px-4 py-3 text-sm font-semibold text-white hover:bg-[#1a3a0a] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {submitting ? "Scheduling..." : "Schedule Free Pickup"}
             </button>

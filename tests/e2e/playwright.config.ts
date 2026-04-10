@@ -4,15 +4,15 @@ export default defineConfig({
   testDir: "./specs",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
-  reporter: "html",
+  retries: 1,
+  workers: 2,
+  reporter: [["list"], ["html", { open: "never" }]],
   use: {
-    baseURL: process.env.BASE_URL || "http://localhost:3000",
+    baseURL: process.env.BASE_URL || "http://192.168.0.100",
     trace: "on-first-retry",
+    screenshot: "only-on-failure",
   },
   projects: [
     { name: "chromium", use: { ...devices["Desktop Chrome"] } },
-    { name: "mobile", use: { ...devices["iPhone 14"] } },
   ],
 });

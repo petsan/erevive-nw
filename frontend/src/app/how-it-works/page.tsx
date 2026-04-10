@@ -66,10 +66,10 @@ export default function HowItWorksPage() {
       <Header />
       <main className="flex-1">
         {/* Hero */}
-        <section className="bg-gradient-to-br from-emerald-600 to-teal-700 text-white py-16">
+        <section className="bg-gradient-to-br from-[#1a3a0a] to-[#2d5016] text-white py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <h1 className="text-3xl sm:text-4xl font-bold">How It Works</h1>
-            <p className="mt-4 text-lg text-emerald-100 max-w-2xl">
+            <p className="mt-4 text-lg text-green-200 max-w-2xl">
               Recycling your old electronics is simple, free, and takes just a few minutes.
             </p>
           </div>
@@ -81,7 +81,7 @@ export default function HowItWorksPage() {
             {steps.map((step) => (
               <div key={step.number} className="flex gap-6">
                 <div className="flex-shrink-0">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-600 text-white font-bold text-lg">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#2d5016] text-white font-bold text-lg">
                     {step.number}
                   </div>
                 </div>
@@ -91,7 +91,7 @@ export default function HowItWorksPage() {
                   <ul className="mt-4 space-y-2">
                     {step.details.map((detail) => (
                       <li key={detail} className="flex items-start gap-2 text-sm text-gray-600">
-                        <span className="text-emerald-500 mt-0.5">&#10003;</span>
+                        <span className="text-green-600 mt-0.5">&#10003;</span>
                         {detail}
                       </li>
                     ))}
@@ -134,7 +134,7 @@ export default function HowItWorksPage() {
             <p className="mt-3 text-gray-600">It takes less than 2 minutes. No account needed.</p>
             <Link
               href="/donate"
-              className="mt-6 inline-flex rounded-lg bg-emerald-600 px-8 py-3 text-sm font-semibold text-white hover:bg-emerald-700 transition-colors"
+              className="mt-6 inline-flex rounded-lg bg-[#2d5016] px-8 py-3 text-sm font-semibold text-white hover:bg-[#1a3a0a] transition-colors"
             >
               Donate Now
             </Link>

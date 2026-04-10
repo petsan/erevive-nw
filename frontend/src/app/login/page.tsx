@@ -36,13 +36,13 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2">
-            <span className="text-3xl font-bold text-emerald-600">eRevive</span>
+            <span className="text-3xl font-bold text-[#2d5016]">eRevive</span>
             <span className="text-sm font-medium text-gray-500">NW</span>
           </Link>
           <h1 className="mt-6 text-2xl font-bold text-gray-900">Sign in to your account</h1>
           <p className="mt-2 text-sm text-gray-600">
             Or{" "}
-            <Link href="/register" className="text-emerald-600 hover:text-emerald-500 font-medium">
+            <Link href="/register" className="text-[#2d5016] hover:text-green-600 font-medium">
               create a new account
             </Link>
           </p>
@@ -67,7 +67,7 @@ export default function LoginPage() {
               type="email"
               autoComplete="email"
               {...register("email")}
-              className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-colors"
+              className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-green-600 focus:ring-2 focus:ring-green-700/20 outline-none transition-colors"
               placeholder="you@example.com"
             />
             {errors.email && (
@@ -84,7 +84,7 @@ export default function LoginPage() {
               type="password"
               autoComplete="current-password"
               {...register("password")}
-              className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-colors"
+              className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-green-600 focus:ring-2 focus:ring-green-700/20 outline-none transition-colors"
               placeholder="Enter your password"
             />
             {errors.password && (
@@ -95,7 +95,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-emerald-700 focus:ring-2 focus:ring-emerald-500/20 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="w-full rounded-lg bg-[#2d5016] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#1a3a0a] focus:ring-2 focus:ring-green-700/20 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             {isSubmitting ? "Signing in..." : "Sign in"}
           </button>

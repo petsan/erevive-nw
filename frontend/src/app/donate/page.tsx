@@ -170,8 +170,8 @@ export default function PublicDonatePage() {
           <div className="flex items-center gap-2 mb-8">
             {progressSteps.map((label, i) => (
               <div key={label} className="flex-1">
-                <div className={`h-1.5 rounded-full ${progressIdx >= i ? "bg-emerald-500" : "bg-gray-200"}`} />
-                <p className={`text-xs mt-1 ${progressIdx >= i ? "text-emerald-700 font-medium" : "text-gray-400"}`}>{label}</p>
+                <div className={`h-1.5 rounded-full ${progressIdx >= i ? "bg-green-500" : "bg-gray-200"}`} />
+                <p className={`text-xs mt-1 ${progressIdx >= i ? "text-[#2d5016] font-medium" : "text-gray-400"}`}>{label}</p>
               </div>
             ))}
           </div>
@@ -183,9 +183,9 @@ export default function PublicDonatePage() {
           {/* Step 1: Choose path */}
           {step === "choose" && (
             <div className="space-y-4">
-              <button onClick={() => setStep("upload")} className="w-full bg-white rounded-xl border border-gray-200 p-6 text-left hover:border-emerald-400 hover:shadow-sm transition-all group">
+              <button onClick={() => setStep("upload")} className="w-full bg-white rounded-xl border border-gray-200 p-6 text-left hover:border-green-600 hover:shadow-sm transition-all group">
                 <div className="flex items-center gap-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 group-hover:bg-emerald-200 transition-colors">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-[#2d5016] group-hover:bg-emerald-200 transition-colors">
                     <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
                       <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
@@ -197,9 +197,9 @@ export default function PublicDonatePage() {
                   </div>
                 </div>
               </button>
-              <button onClick={handleDescribeManually} className="w-full bg-white rounded-xl border border-gray-200 p-6 text-left hover:border-emerald-400 hover:shadow-sm transition-all group">
+              <button onClick={handleDescribeManually} className="w-full bg-white rounded-xl border border-gray-200 p-6 text-left hover:border-green-600 hover:shadow-sm transition-all group">
                 <div className="flex items-center gap-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 text-gray-600 group-hover:bg-emerald-100 group-hover:text-emerald-700 transition-colors">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 text-gray-600 group-hover:bg-green-100 group-hover:text-[#2d5016] transition-colors">
                     <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                     </svg>
@@ -236,7 +236,7 @@ export default function PublicDonatePage() {
           {/* Upload photo */}
           {step === "upload" && (
             <div className="bg-white rounded-xl border border-gray-200 p-8">
-              <label htmlFor="photo-upload" className="relative cursor-pointer rounded-2xl border-2 border-dashed border-gray-300 p-12 block hover:border-emerald-400 transition-colors text-center">
+              <label htmlFor="photo-upload" className="relative cursor-pointer rounded-2xl border-2 border-dashed border-gray-300 p-12 block hover:border-green-600 transition-colors text-center">
                 {preview ? (
                   <img src={preview} alt="Preview" className="mx-auto max-h-64 rounded-lg object-contain" />
                 ) : (
@@ -253,7 +253,7 @@ export default function PublicDonatePage() {
               </label>
               <div className="mt-6 flex gap-3">
                 {file ? (
-                  <button onClick={handleUploadAndIdentify} className="flex-1 rounded-lg bg-emerald-600 px-4 py-3 text-sm font-semibold text-white hover:bg-emerald-700 transition-colors">Upload & Identify with AI</button>
+                  <button onClick={handleUploadAndIdentify} className="flex-1 rounded-lg bg-[#2d5016] px-4 py-3 text-sm font-semibold text-white hover:bg-[#1a3a0a] transition-colors">Upload & Identify with AI</button>
                 ) : (<div className="flex-1" />)}
                 <button onClick={() => setStep("choose")} className="rounded-lg border border-gray-300 px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">Back</button>
               </div>
@@ -263,7 +263,7 @@ export default function PublicDonatePage() {
           {/* Identifying spinner */}
           {step === "identifying" && (
             <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
-              <div className="animate-spin mx-auto h-10 w-10 border-4 border-emerald-500 border-t-transparent rounded-full" />
+              <div className="animate-spin mx-auto h-10 w-10 border-4 border-green-600 border-t-transparent rounded-full" />
               <p className="mt-4 text-sm text-gray-600">AI is analyzing your image...</p>
             </div>
           )}
@@ -273,7 +273,7 @@ export default function PublicDonatePage() {
             <div className="bg-white rounded-xl border border-gray-200 p-8 space-y-6">
               {preview && <img src={preview} alt="Item" className="mx-auto max-h-48 rounded-lg object-contain" />}
               {aiResult && (
-                <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3 text-sm text-emerald-800 text-center">
+                <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-sm text-green-900 text-center">
                   AI identified with {Math.round(aiResult.confidence * 100)}% confidence
                 </div>
               )}
@@ -298,8 +298,8 @@ export default function PublicDonatePage() {
                               onClick={() => toggleItem(item)}
                               className={`rounded-full px-3.5 py-1.5 text-sm font-medium border transition-colors ${
                                 selected
-                                  ? "bg-emerald-600 text-white border-emerald-600"
-                                  : "bg-white text-gray-700 border-gray-300 hover:border-emerald-400 hover:text-emerald-700"
+                                  ? "bg-[#2d5016] text-white border-emerald-600"
+                                  : "bg-white text-gray-700 border-gray-300 hover:border-green-600 hover:text-[#2d5016]"
                               }`}
                             >
                               {selected && <span className="mr-1">&#10003;</span>}
@@ -312,23 +312,23 @@ export default function PublicDonatePage() {
                   ))}
                 </div>
                 {selectedItems.length > 0 && (
-                  <p className="mt-3 text-xs text-emerald-700 font-medium">{selectedItems.length} item{selectedItems.length !== 1 ? "s" : ""} selected</p>
+                  <p className="mt-3 text-xs text-[#2d5016] font-medium">{selectedItems.length} item{selectedItems.length !== 1 ? "s" : ""} selected</p>
                 )}
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Details <span className="text-gray-400 font-normal">(optional)</span></label>
-                <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={2} placeholder="Brand, model, age, quantity, any issues, etc." className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none" />
+                <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={2} placeholder="Brand, model, age, quantity, any issues, etc." className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-green-600 focus:ring-2 focus:ring-green-700/20 outline-none" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Condition</label>
-                <select value={condition} onChange={(e) => setCondition(e.target.value)} className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none bg-white">
+                <select value={condition} onChange={(e) => setCondition(e.target.value)} className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-green-600 focus:ring-2 focus:ring-green-700/20 outline-none bg-white">
                   {CONDITION_OPTIONS.map((opt) => (
                     <option key={opt.value} value={opt.value}>{opt.label}</option>
                   ))}
                 </select>
               </div>
-              <button onClick={handleNext} disabled={selectedItems.length === 0} className="w-full rounded-lg bg-emerald-600 px-4 py-3 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+              <button onClick={handleNext} disabled={selectedItems.length === 0} className="w-full rounded-lg bg-[#2d5016] px-4 py-3 text-sm font-semibold text-white hover:bg-[#1a3a0a] disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
                 Next: Contact Info
               </button>
             </div>
@@ -340,17 +340,17 @@ export default function PublicDonatePage() {
               <p className="text-sm text-gray-600">Optional — leave blank to donate anonymously.</p>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
-                <input type="text" value={donorName} onChange={(e) => setDonorName(e.target.value)} placeholder="Jane Doe" className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none" />
+                <input type="text" value={donorName} onChange={(e) => setDonorName(e.target.value)} placeholder="Jane Doe" className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-green-600 focus:ring-2 focus:ring-green-700/20 outline-none" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                <input type="email" value={donorEmail} onChange={(e) => setDonorEmail(e.target.value)} placeholder="you@example.com" className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none" />
+                <input type="email" value={donorEmail} onChange={(e) => setDonorEmail(e.target.value)} placeholder="you@example.com" className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-green-600 focus:ring-2 focus:ring-green-700/20 outline-none" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-                <input type="tel" value={donorPhone} onChange={(e) => setDonorPhone(e.target.value)} placeholder="(206) 555-0100" className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none" />
+                <input type="tel" value={donorPhone} onChange={(e) => setDonorPhone(e.target.value)} placeholder="(206) 555-0100" className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-green-600 focus:ring-2 focus:ring-green-700/20 outline-none" />
               </div>
-              <button onClick={handleSubmit} className="w-full rounded-lg bg-emerald-600 px-4 py-3 text-sm font-semibold text-white hover:bg-emerald-700 transition-colors">
+              <button onClick={handleSubmit} className="w-full rounded-lg bg-[#2d5016] px-4 py-3 text-sm font-semibold text-white hover:bg-[#1a3a0a] transition-colors">
                 Submit Donation
               </button>
               <button onClick={handleSubmit} className="w-full text-sm text-gray-500 hover:text-gray-700">
@@ -364,14 +364,14 @@ export default function PublicDonatePage() {
             <div ref={receiptRef}>
               <div className="bg-white rounded-xl border border-gray-200 overflow-hidden print:shadow-none print:border-0">
                 {/* Receipt header */}
-                <div className="bg-emerald-600 px-8 py-6 text-white print:bg-white print:text-black">
+                <div className="bg-[#2d5016] px-8 py-6 text-white print:bg-white print:text-black">
                   <div className="flex items-center justify-between">
                     <div>
                       <h2 className="text-xl font-bold">eRevive NW</h2>
-                      <p className="text-sm text-emerald-100 print:text-gray-600">E-Waste Recycling — Seattle, WA</p>
+                      <p className="text-sm text-green-200 print:text-gray-600">E-Waste Recycling — Seattle, WA</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm font-medium text-emerald-100 print:text-gray-600">Donation Receipt</p>
+                      <p className="text-sm font-medium text-green-200 print:text-gray-600">Donation Receipt</p>
                       <p className="text-lg font-bold">#{receiptNumber}</p>
                     </div>
                   </div>
@@ -400,7 +400,7 @@ export default function PublicDonatePage() {
                     <div className="space-y-1.5">
                       {selectedItems.map((item) => (
                         <div key={item} className="flex items-center gap-2 text-sm">
-                          <span className="text-emerald-600">&#10003;</span>
+                          <span className="text-[#2d5016]">&#10003;</span>
                           <span className="text-gray-900">{item}</span>
                         </div>
                       ))}
@@ -441,7 +441,7 @@ export default function PublicDonatePage() {
                 <button onClick={handlePrintReceipt} className="rounded-lg border border-gray-300 px-5 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
                   Print Receipt
                 </button>
-                <button onClick={reset} className="rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-emerald-700 transition-colors">
+                <button onClick={reset} className="rounded-lg bg-[#2d5016] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#1a3a0a] transition-colors">
                   Donate Another Item
                 </button>
                 <button onClick={() => router.push("/")} className="rounded-lg border border-gray-300 px-5 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">

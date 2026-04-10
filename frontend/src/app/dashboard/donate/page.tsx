@@ -117,8 +117,8 @@ export default function DonatePage() {
               const isActive = steps.indexOf(step) >= i || step === "submitted";
               return (
                 <div key={label} className="flex-1">
-                  <div className={`h-1.5 rounded-full ${isActive ? "bg-emerald-500" : "bg-gray-200"}`} />
-                  <p className={`text-xs mt-1 ${isActive ? "text-emerald-700 font-medium" : "text-gray-400"}`}>
+                  <div className={`h-1.5 rounded-full ${isActive ? "bg-green-500" : "bg-gray-200"}`} />
+                  <p className={`text-xs mt-1 ${isActive ? "text-[#2d5016] font-medium" : "text-gray-400"}`}>
                     {label}
                   </p>
                 </div>
@@ -136,7 +136,7 @@ export default function DonatePage() {
               <div className="text-center">
                 <label
                   htmlFor="photo-upload"
-                  className="relative cursor-pointer rounded-2xl border-2 border-dashed border-gray-300 p-12 block hover:border-emerald-400 transition-colors"
+                  className="relative cursor-pointer rounded-2xl border-2 border-dashed border-gray-300 p-12 block hover:border-green-600 transition-colors"
                 >
                   {preview ? (
                     <img src={preview} alt="Preview" className="mx-auto max-h-64 rounded-lg object-contain" />
@@ -179,7 +179,7 @@ export default function DonatePage() {
               {file && (
                 <button
                   onClick={handleUploadAndIdentify}
-                  className="mt-6 w-full rounded-lg bg-emerald-600 px-4 py-3 text-sm font-semibold text-white hover:bg-emerald-700 transition-colors"
+                  className="mt-6 w-full rounded-lg bg-[#2d5016] px-4 py-3 text-sm font-semibold text-white hover:bg-[#1a3a0a] transition-colors"
                 >
                   Upload & Identify with AI
                 </button>
@@ -190,7 +190,7 @@ export default function DonatePage() {
           {/* Step 2: Identifying */}
           {step === "identifying" && (
             <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
-              <div className="animate-spin mx-auto h-10 w-10 border-4 border-emerald-500 border-t-transparent rounded-full" />
+              <div className="animate-spin mx-auto h-10 w-10 border-4 border-green-600 border-t-transparent rounded-full" />
               <p className="mt-4 text-sm text-gray-600">AI is analyzing your image...</p>
             </div>
           )}
@@ -203,7 +203,7 @@ export default function DonatePage() {
               )}
 
               {aiResult && (
-                <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3 text-sm text-emerald-800">
+                <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-sm text-green-900">
                   AI identified with {Math.round(aiResult.confidence * 100)}% confidence
                 </div>
               )}
@@ -214,7 +214,7 @@ export default function DonatePage() {
                   type="text"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none"
+                  className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-green-600 focus:ring-2 focus:ring-green-700/20 outline-none"
                 />
               </div>
 
@@ -224,7 +224,7 @@ export default function DonatePage() {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   rows={3}
-                  className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none"
+                  className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-green-600 focus:ring-2 focus:ring-green-700/20 outline-none"
                 />
               </div>
 
@@ -235,7 +235,7 @@ export default function DonatePage() {
                     type="text"
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none"
+                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-green-600 focus:ring-2 focus:ring-green-700/20 outline-none"
                   />
                 </div>
                 <div>
@@ -243,7 +243,7 @@ export default function DonatePage() {
                   <select
                     value={condition}
                     onChange={(e) => setCondition(e.target.value)}
-                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none"
+                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-green-600 focus:ring-2 focus:ring-green-700/20 outline-none"
                   >
                     <option value="">Unknown</option>
                     <option value="working">Working</option>
@@ -254,7 +254,7 @@ export default function DonatePage() {
 
               <button
                 onClick={handleSubmit}
-                className="w-full rounded-lg bg-emerald-600 px-4 py-3 text-sm font-semibold text-white hover:bg-emerald-700 transition-colors"
+                className="w-full rounded-lg bg-[#2d5016] px-4 py-3 text-sm font-semibold text-white hover:bg-[#1a3a0a] transition-colors"
               >
                 Submit Donation
               </button>

@@ -15,10 +15,10 @@ export default function AboutPage() {
       <Header />
       <main className="flex-1">
         {/* Hero */}
-        <section className="bg-gradient-to-br from-emerald-600 to-teal-700 text-white py-16">
+        <section className="bg-gradient-to-br from-[#1a3a0a] to-[#2d5016] text-white py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <h1 className="text-3xl sm:text-4xl font-bold">About eRevive NW</h1>
-            <p className="mt-4 text-lg text-emerald-100 max-w-2xl">
+            <p className="mt-4 text-lg text-green-200 max-w-2xl">
               Keeping electronics out of landfills and giving them a second life in the Pacific Northwest.
             </p>
           </div>
@@ -43,15 +43,15 @@ export default function AboutPage() {
             <h2 className="text-2xl font-bold text-gray-900 text-center">Why It Matters</h2>
             <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
               <div>
-                <p className="text-3xl font-bold text-emerald-600">50M+</p>
+                <p className="text-3xl font-bold text-[#2d5016]">50M+</p>
                 <p className="mt-2 text-sm text-gray-600">Metric tons of e-waste generated globally each year</p>
               </div>
               <div>
-                <p className="text-3xl font-bold text-emerald-600">17%</p>
+                <p className="text-3xl font-bold text-[#2d5016]">17%</p>
                 <p className="mt-2 text-sm text-gray-600">Of global e-waste is properly recycled</p>
               </div>
               <div>
-                <p className="text-3xl font-bold text-emerald-600">70%</p>
+                <p className="text-3xl font-bold text-[#2d5016]">70%</p>
                 <p className="mt-2 text-sm text-gray-600">Of toxic waste in landfills comes from electronics</p>
               </div>
             </div>
@@ -83,7 +83,7 @@ export default function AboutPage() {
               ].map((item) => (
                 <div key={item.title} className="flex gap-4">
                   <div className="flex-shrink-0 mt-1">
-                    <div className="h-2 w-2 rounded-full bg-emerald-500" />
+                    <div className="h-2 w-2 rounded-full bg-green-500" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900">{item.title}</h3>
@@ -119,7 +119,7 @@ export default function AboutPage() {
             </p>
             <Link
               href="/donate"
-              className="mt-6 inline-flex rounded-lg bg-emerald-600 px-8 py-3 text-sm font-semibold text-white hover:bg-emerald-700 transition-colors"
+              className="mt-6 inline-flex rounded-lg bg-[#2d5016] px-8 py-3 text-sm font-semibold text-white hover:bg-[#1a3a0a] transition-colors"
             >
               Donate Now
             </Link>

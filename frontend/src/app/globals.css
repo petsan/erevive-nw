@@ -1,8 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f8faf8;
+  --foreground: #1a2e1a;
+  --seattle-pine: #2d5016;
+  --seattle-forest: #1a3a0a;
+  --seattle-fern: #4a7c2e;
+  --seattle-mist: #e8efe8;
+  --seattle-rain: #c5d5c5;
+  --seattle-slate: #5a6b5a;
 }
 
 @theme inline {
@@ -12,15 +18,46 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Seattle mountain/tree silhouette backdrop for hero sections */
+.seattle-backdrop {
+  position: relative;
+  overflow: hidden;
+}
+
+.seattle-backdrop::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120' preserveAspectRatio='none'%3E%3Cpath d='M0 120 L0 80 Q50 30 100 60 L150 45 Q170 20 200 40 L250 25 Q280 0 310 20 L340 35 Q360 15 380 30 L420 10 Q440 0 460 15 L500 40 Q530 20 560 35 L600 20 Q640 5 680 25 L720 50 Q740 30 760 45 L800 30 Q830 10 860 25 L900 15 Q940 0 980 20 L1020 40 Q1050 25 1080 35 L1120 20 Q1160 5 1200 30 L1240 45 Q1280 25 1320 40 L1360 55 Q1400 40 1440 50 L1440 120 Z' fill='%23f8faf8'/%3E%3C/svg%3E") no-repeat bottom center;
+  background-size: cover;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Subtle rain texture overlay */
+.seattle-rain {
+  position: relative;
+}
+
+.seattle-rain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 3px,
+    rgba(255, 255, 255, 0.015) 3px,
+    rgba(255, 255, 255, 0.015) 4px
+  );
+  pointer-events: none;
 }

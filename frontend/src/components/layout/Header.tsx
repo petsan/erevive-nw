@@ -11,7 +11,7 @@ export default function Header() {
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl font-bold text-emerald-600">eRevive</span>
+            <span className="text-2xl font-bold text-[#2d5016]">eRevive</span>
             <span className="text-sm font-medium text-gray-500">NW</span>
           </Link>
 
@@ -19,25 +19,25 @@ export default function Header() {
           <div className="hidden sm:flex sm:items-center sm:gap-6">
             <Link
               href="/how-it-works"
-              className="text-sm font-medium text-gray-600 hover:text-emerald-600 transition-colors"
+              className="text-sm font-medium text-gray-600 hover:text-[#2d5016] transition-colors"
             >
               How It Works
             </Link>
             <Link
               href="/about"
-              className="text-sm font-medium text-gray-600 hover:text-emerald-600 transition-colors"
+              className="text-sm font-medium text-gray-600 hover:text-[#2d5016] transition-colors"
             >
               About
             </Link>
             <Link
               href="/login"
-              className="text-sm font-medium text-gray-600 hover:text-emerald-600 transition-colors"
+              className="text-sm font-medium text-gray-600 hover:text-[#2d5016] transition-colors"
             >
               Sign In
             </Link>
             <Link
               href="/donate"
-              className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700 transition-colors"
+              className="rounded-lg bg-[#2d5016] px-4 py-2 text-sm font-medium text-white hover:bg-[#1a3a0a] transition-colors"
             >
               Donate Now
             </Link>
@@ -46,7 +46,7 @@ export default function Header() {
           {/* Mobile menu button */}
           <button
             type="button"
-            className="sm:hidden inline-flex items-center justify-center rounded-md p-2 text-gray-600 hover:text-emerald-600"
+            className="sm:hidden inline-flex items-center justify-center rounded-md p-2 text-gray-600 hover:text-[#2d5016]"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             <span className="sr-only">Toggle menu</span>
@@ -72,7 +72,7 @@ export default function Header() {
             <Link href="/login" className="block px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-md">
               Sign In
             </Link>
-            <Link href="/register" className="block px-3 py-2 text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-md text-center">
+            <Link href="/register" className="block px-3 py-2 text-sm font-medium text-white bg-[#2d5016] hover:bg-[#1a3a0a] rounded-md text-center">
               Get Started
             </Link>
           </div>
