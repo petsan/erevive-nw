@@ -1,17 +1,27 @@
 import Link from "next/link";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import MtRainierIcon from "@/components/ui/MtRainierIcon";
+import SpaceNeedleSkyline from "@/components/ui/SpaceNeedleSkyline";
 
 export default function Home() {
   return (
     <>
       <Header />
       <main className="flex-1">
-        {/* Hero — Seattle forest gradient with mountain silhouette */}
-        <section className="seattle-backdrop seattle-rain relative text-white" style={{ background: "linear-gradient(135deg, #1a3a0a 0%, #2d5016 40%, #1a5c2e 70%, #0f4a3a 100%)" }}>
+        {/* Hero — Seattle skyline with Space Needle */}
+        <section className="seattle-rain relative text-white overflow-hidden" style={{ background: "linear-gradient(135deg, #1a3a0a 0%, #2d5016 40%, #1a5c2e 70%, #0f4a3a 100%)" }}>
+          {/* Space Needle + downtown skyline backdrop */}
+          <div className="absolute inset-0 z-0">
+            <SpaceNeedleSkyline className="absolute bottom-0 left-0 w-full h-[200px]" />
+          </div>
+
           <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24 sm:py-32">
             <div className="max-w-2xl">
-              <p className="text-sm font-medium tracking-wider uppercase text-green-300/80 mb-4">Seattle&apos;s E-Waste Recycling Service</p>
+              <div className="flex items-center gap-3 mb-4">
+                <MtRainierIcon size={32} className="text-green-300/80" />
+                <p className="text-sm font-medium tracking-wider uppercase text-green-300/80">Seattle&apos;s E-Waste Recycling Service</p>
+              </div>
               <h1 className="text-4xl sm:text-5xl font-bold tracking-tight leading-tight">
                 Give your electronics a{" "}
                 <span className="text-green-300">second life</span>

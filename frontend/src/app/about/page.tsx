@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import SpaceNeedleSkyline from "@/components/ui/SpaceNeedleSkyline";
 
 export const metadata: Metadata = {
   title: "About Us | eRevive NW | E-Waste Recycling Seattle",
@@ -15,8 +16,9 @@ export default function AboutPage() {
       <Header />
       <main className="flex-1">
         {/* Hero */}
-        <section className="bg-gradient-to-br from-[#1a3a0a] to-[#2d5016] text-white py-16">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <section className="relative overflow-hidden text-white py-16" style={{ background: "linear-gradient(135deg, #1a3a0a 0%, #2d5016 60%, #1a5c2e 100%)" }}>
+          <SpaceNeedleSkyline className="absolute bottom-0 left-0 w-full h-[140px]" />
+          <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <h1 className="text-3xl sm:text-4xl font-bold">About eRevive NW</h1>
             <p className="mt-4 text-lg text-green-200 max-w-2xl">
               Keeping electronics out of landfills and giving them a second life in the Pacific Northwest.

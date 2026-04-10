@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import MtRainierIcon from "@/components/ui/MtRainierIcon";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, type LoginFormData } from "@/lib/validators";
@@ -36,6 +37,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2">
+            <MtRainierIcon size={36} className="text-[#2d5016]" />
             <span className="text-3xl font-bold text-[#2d5016]">eRevive</span>
             <span className="text-sm font-medium text-gray-500">NW</span>
           </Link>
